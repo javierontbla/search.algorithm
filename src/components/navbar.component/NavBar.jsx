@@ -6,7 +6,7 @@ const NavBar = () => {
   return (
     <>
       <Nav expand="lg">
-        <Logo>searh.algorithm</Logo>
+        <Logo>Pathfinding Visualizer</Logo>
       </Nav>
     </>
   );

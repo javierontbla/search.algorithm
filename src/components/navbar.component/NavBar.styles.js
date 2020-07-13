@@ -9,5 +9,5 @@ export const Nav = styled(Navbar)`
 export const Logo = styled(Navbar.Brand)`
   color: white !important;
   font-weight: bold !important;
-  font-size: 32px;
+  font-size: 28px;
 `;

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
-export const PathVisualizerContainer = styled.div`
+export const MapContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
 `;
