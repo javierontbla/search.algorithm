@@ -5,7 +5,7 @@ import { NodeContainer, NodeStart, NodeEnd } from "./Node.styles";
 const Node = ({ indx }) => {
   return (
     <>
-      {indx === 650 ? (
+      {indx === 680 ? (
         <NodeStart />
       ) : indx === 800 ? (
         <NodeEnd />
