@@ -1,8 +1,12 @@
 import styled from "styled-components";
 
-export const MapContainer = styled.div`
+export const Rows = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  padding: 20px;
+  margin-top: 20px;
+`;
+
+export const Column = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

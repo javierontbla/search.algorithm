@@ -1,24 +1,45 @@
 import React, { useEffect, useState } from "react";
 
 import Node from "../node.component/Node";
-import { MapContainer } from "./PathVisualizer.styles";
+import { Rows, Column } from "./PathVisualizer.styles";
+import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
 
 const PathVisualizer = () => {
-  const [numOfNodes, setNumOfNodes] = useState([]);
+  const [table, setTable] = useState([]);
+  const size = 5;
 
   useEffect(() => {
-    for (let i = 0; i < 1612; i++) {
-      setNumOfNodes((prevNodes) => [...prevNodes, i]);
+    let grid = [];
+    for (let col = 0; col <= size; col++) {
+      let column = [];
+      grid[col] = column;
+      for (let row = 0; row <= size; row++) {
+        grid[col].push({
+          g: 0,
+          f: 0,
+          h: 0,
+          row,
+          col,
+        });
+      }
     }
+    setTable(grid);
+    aStarAlgorithm(grid[0][0], grid[size - 1][size - 1]);
   }, []);
 
   return (
     <>
-      <MapContainer>
-        {numOfNodes.map((node, indx) => (
-          <Node key={node} indx={indx} />
-        ))}
-      </MapContainer>
+      <Rows>
+        {table.map((row, rowIndx) => {
+          return (
+            <Column key={rowIndx}>
+              {row.map((column, colIndx) => (
+                <Node key={colIndx} row={rowIndx} col={colIndx} />
+              ))}
+            </Column>
+          );
+        })}
+      </Rows>
     </>
   );
 };
