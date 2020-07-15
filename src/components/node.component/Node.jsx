@@ -2,15 +2,15 @@ import React from "react";
 
 import { NodeCell, NodeStart, NodeEnd } from "./Node.styles";
 
-const Node = ({ row, col }) => {
+const Node = ({ row, col, visited }) => {
   return (
     <>
       {row === 0 && col === 0 ? (
-        <NodeStart width={"30px"} height={"30px"} />
-      ) : row === 5 && col === 5 ? (
-        <NodeEnd width={"30px"} height={"30px"} />
+        <NodeStart />
+      ) : row === 10 && col === 10 ? (
+        <NodeEnd />
       ) : (
-        <NodeCell width={"30px"} height={"30px"} />
+        <NodeCell visited={visited} />
       )}
     </>
   );
