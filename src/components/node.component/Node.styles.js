@@ -7,6 +7,13 @@ export const NodeCell = styled.div`
   background-color: ${(props) => (props.visited ? "yellow" : "none")};
 `;
 
+export const NodePath = styled.div`
+  border: 1px solid black;
+  height: 30px;
+  width: 30px;
+  background-color: blue;
+`;
+
 export const NodeStart = styled.div`
   border: 1px solid black;
   height: 30px;

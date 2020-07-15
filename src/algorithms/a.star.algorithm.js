@@ -8,6 +8,7 @@ const calculateHeuristic = (node, end) => {
 export const aStarAlgorithm = (start, end) => {
   let openSet = [];
   let closedSet = [];
+  let path = [];
 
   openSet.push(start);
 
@@ -24,6 +25,11 @@ export const aStarAlgorithm = (start, end) => {
     let current = openSet[closest];
 
     if (current === end) {
+      path.push(current);
+      while (current.parent) {
+        path.push(current.parent);
+        current = current.parent;
+      }
       console.log("FOUND!!!");
       break;
     }
@@ -54,4 +60,5 @@ export const aStarAlgorithm = (start, end) => {
     }
   }
   console.log("OUT!!!");
+  return [closedSet, path];
 };

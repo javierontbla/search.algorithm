@@ -1,14 +1,16 @@
 import React from "react";
 
-import { NodeCell, NodeStart, NodeEnd } from "./Node.styles";
+import { NodeCell, NodeStart, NodeEnd, NodePath } from "./Node.styles";
 
-const Node = ({ row, col, visited }) => {
+const Node = ({ row, col, visited, path, endX, endY }) => {
   return (
     <>
       {row === 0 && col === 0 ? (
         <NodeStart />
-      ) : row === 10 && col === 10 ? (
+      ) : row === endX && col === endY ? (
         <NodeEnd />
+      ) : path ? (
+        <NodePath />
       ) : (
         <NodeCell visited={visited} />
       )}
