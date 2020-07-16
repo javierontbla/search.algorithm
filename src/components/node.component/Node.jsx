@@ -15,9 +15,9 @@ const Node = ({
 }) => {
   return (
     <>
-      {row === startX && col === startY ? (
+      {col === startX && row === startY ? (
         <NodeStart />
-      ) : row === endX && col === endY ? (
+      ) : col === endX && row === endY ? (
         <NodeEnd />
       ) : path ? (
         <NodePath />

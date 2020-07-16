@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from "react";
 
 import Node from "../node.component/Node";
-import { Rows, Column } from "./PathVisualizer.styles";
+import NavBar from "../navbar.component/NavBar";
+import { VisualizerContainer, Rows, Column } from "./PathVisualizer.styles";
 import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
 
-const PathVisualizer = ({ runAStar }) => {
+const PathVisualizer = () => {
+  // complete grid
   const [table, setTable] = useState([]);
-  const [endX, setEndX] = useState(20);
-  const [endY, setEndY] = useState(10);
-  const [startX, setStartX] = useState(0);
-  const [startY, setStartY] = useState(0);
+  // create random obstacle across the grid
+  const [createRandom, setCreateRandom] = useState(false);
+  // restart var that gets passed to navbar, to display btn or no
+  const [restart, setRestart] = useState(false);
+  // hook to restart the DOM only
+  const [restartDOM, setRestartDOM] = useState(false);
+  const [endX, setEndX] = useState(25);
+  const [endY, setEndY] = useState(12);
+  const [startX, setStartX] = useState(7);
+  const [startY, setStartY] = useState(3);
 
   // grid size X & Y
-  let columns = 45;
-  let rows = 15;
-  // grid to store the i & j values of the loops
-  let grid = [];
+  let columns = 38;
+  let rows = 16;
 
   useEffect(() => {
-    const generateObstacles = () => {
-      if (Math.random(1) < 0.4) return true;
+    // grid to store the i & j values of the loops
+    let grid = [];
+
+    const randomObstacles = () => {
+      if (createRandom) {
+        if (Math.random(1) < 0.3) return true;
+      }
       return false;
     };
     // columns
@@ -39,54 +50,14 @@ const PathVisualizer = ({ runAStar }) => {
           parent: null,
           visited: false,
           path: false,
-          obstacle: generateObstacles(),
+          obstacle: randomObstacles(),
         });
       }
     }
     // set grid to table state to render again
     setTable(grid);
-
-    const nodeNeighbors = (i, j) => {
-      let neighborsArr = [];
-      // adding the neighboors to each individual node
-      // and those get stored in the object node
-      // managing edges with if statements
-      if (i < columns - 1) neighborsArr.push(grid[i + 1][j]);
-      if (i > 0) neighborsArr.push(grid[i - 1][j]);
-      if (j < rows - 1) neighborsArr.push(grid[i][j + 1]);
-      if (j > 0) neighborsArr.push(grid[i][j - 1]);
-      if (i > 0 && j > 0) neighborsArr.push(grid[i - 1][j - 1]);
-      if (i < columns - 1 && j < rows - 1)
-        neighborsArr.push(grid[i + 1][j + 1]);
-      if (i > 0 && j < rows - 1) neighborsArr.push(grid[i - 1][j + 1]);
-      if (i < columns - 1 && j > 0) neighborsArr.push(grid[i + 1][j - 1]);
-
-      return neighborsArr;
-    };
-
-    // adding the neighbors to the node, once the grid is already built
-    for (let i = 0; i < columns; i++) {
-      for (let j = 0; j < rows; j++) {
-        // adding neighbors
-        grid[i][j].neighbors = nodeNeighbors(i, j);
-      }
-    }
-
-    // sending start & end node to algorithm function
-    if (runAStar) {
-      // in case they turned into obstacles from the initial loop
-      grid[startX][startY].obstacle = false;
-      grid[endX][endY].obstacle = false;
-      // algorithm only needs start and end, because
-      // each object has stored their neighbors
-      const algorithmResult = aStarAlgorithm(
-        grid[startX][startY],
-        grid[endX][endY]
-      );
-      if (algorithmResult === "no viable solution") return;
-      aStarAnimation(algorithmResult[0], algorithmResult[1]);
-    }
-  }, [runAStar]);
+    setRestart(false);
+  }, [createRandom, restartDOM]);
 
   // run the animation with the closedSet arr from the algorithm function
   const aStarAnimation = (visitedNodes, path) => {
@@ -94,8 +65,8 @@ const PathVisualizer = ({ runAStar }) => {
     for (let i = 0; i < visitedNodes.length; i++) {
       // timeout to delay the loop for the animation
       setTimeout(() => {
-        const oldNode = grid[visitedNodes[i].i][visitedNodes[i].j];
-        const newGrid = grid.slice();
+        const oldNode = table[visitedNodes[i].i][visitedNodes[i].j];
+        const newGrid = table.slice();
         const newNode = {
           ...oldNode,
           visited: true,
@@ -105,7 +76,7 @@ const PathVisualizer = ({ runAStar }) => {
         setTable(newGrid);
         // once the loop reaches it's final element, run rhe path animation
         if (i === visitedNodes.length - 1) drawPath(path);
-      }, 100 * i);
+      }, 110 * i);
     }
   };
 
@@ -113,8 +84,8 @@ const PathVisualizer = ({ runAStar }) => {
   const drawPath = (path) => {
     for (let j = 0; j < path.length; j++) {
       setTimeout(() => {
-        const oldNode = grid[path[j].i][path[j].j];
-        const newGrid = grid.slice();
+        const oldNode = table[path[j].i][path[j].j];
+        const newGrid = table.slice();
         const newNode = {
           ...oldNode,
           // updating the path nodes (blue nodes)
@@ -122,34 +93,108 @@ const PathVisualizer = ({ runAStar }) => {
         };
         newGrid[path[j].i][path[j].j] = newNode;
         setTable(newGrid);
-      }, 100 * j);
+        if (j === path.length - 1) setRestart(true);
+      }, 110 * j);
     }
+  };
+
+  const createObstacle = (i, j) => {
+    const oldNode = table[i][j];
+    const copyGrid = table.slice();
+    const newNode = {
+      ...oldNode,
+      obstacle: true,
+    };
+    copyGrid[i][j] = newNode;
+    setTable(copyGrid);
+  };
+
+  const addNeighbors = () => {
+    const nodeNeighbors = (i, j) => {
+      let neighborsArr = [];
+      // adding the neighboors to each individual node
+      // and those get stored in the object node
+      // managing edges with if statements
+      if (i < columns - 1) neighborsArr.push(table[i + 1][j]);
+      if (i > 0) neighborsArr.push(table[i - 1][j]);
+      if (j < rows - 1) neighborsArr.push(table[i][j + 1]);
+      if (j > 0) neighborsArr.push(table[i][j - 1]);
+      if (i > 0 && j > 0) neighborsArr.push(table[i - 1][j - 1]);
+      if (i < columns - 1 && j < rows - 1)
+        neighborsArr.push(table[i + 1][j + 1]);
+      if (i > 0 && j < rows - 1) neighborsArr.push(table[i - 1][j + 1]);
+      if (i < columns - 1 && j > 0) neighborsArr.push(table[i + 1][j - 1]);
+
+      return neighborsArr;
+    };
+
+    // adding the neighbors to the node, once the grid is already built
+    for (let i = 0; i < columns; i++) {
+      for (let j = 0; j < rows; j++) {
+        // adding neighbors
+        table[i][j].neighbors = nodeNeighbors(i, j);
+      }
+    }
+  };
+
+  const executeAlgorithm = () => {
+    addNeighbors();
+    // sending start & end node to algorithm function
+    // in case they turned into obstacles from the initial loop
+    table[startX][startY].obstacle = false;
+    table[endX][endY].obstacle = false;
+    // algorithm only needs start and end, because
+    // each object has stored their neighbors
+    const algorithmResult = aStarAlgorithm(
+      table[startX][startY],
+      table[endX][endY]
+    );
+    if (algorithmResult === "no viable solution") return;
+    aStarAnimation(algorithmResult[0], algorithmResult[1]);
+  };
+
+  const restartVisualizer = () => {
+    setRestartDOM((prevState) => !prevState);
+    setCreateRandom(false);
   };
 
   return (
     <>
-      <Rows>
-        {table.map((row, rowIndx) => {
-          return (
-            <Column key={rowIndx}>
-              {row.map((column, colIndx) => (
-                <Node
-                  obstacle={column.obstacle}
-                  key={colIndx}
-                  row={rowIndx}
-                  col={colIndx}
-                  visited={table[rowIndx][colIndx].visited}
-                  path={table[rowIndx][colIndx].path}
-                  endX={endX}
-                  endY={endY}
-                  startX={startX}
-                  startY={startY}
-                />
-              ))}
-            </Column>
-          );
-        })}
-      </Rows>
+      <VisualizerContainer>
+        <NavBar
+          runAStar={() => executeAlgorithm()}
+          random={() => setCreateRandom((prevState) => !prevState)}
+          restart={restart}
+          restartVisualizer={() => restartVisualizer()}
+        />
+        <Rows>
+          {table.map((column, colIndx) => {
+            return (
+              <Column key={colIndx}>
+                {column.map((row, rowIndx) => (
+                  <div
+                    key={rowIndx}
+                    onClick={() => createObstacle(colIndx, rowIndx)}
+                  >
+                    <Node
+                      obstacle={row.obstacle}
+                      key={rowIndx}
+                      row={rowIndx}
+                      col={colIndx}
+                      visited={table[colIndx][rowIndx].visited}
+                      path={table[colIndx][rowIndx].path}
+                      endX={endX}
+                      endY={endY}
+                      startX={startX}
+                      startY={startY}
+                    />
+                  </div>
+                ))}
+              </Column>
+            );
+          })}
+        </Rows>
+      </VisualizerContainer>
     </>
   );
 };

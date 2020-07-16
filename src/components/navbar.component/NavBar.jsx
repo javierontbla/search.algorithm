@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { Nav, Logo } from "./NavBar.styles";
+import { Nav, Logo, NavButton } from "./NavBar.styles";
 
-const NavBar = ({ runAlgorithm }) => {
+const NavBar = ({ runAStar, random, restart, restartVisualizer }) => {
   return (
     <>
-      <Nav expand="lg">
-        <Logo>Pathfinding Visualizer</Logo>
-        <button onClick={() => runAlgorithm()}>A* Algorithm</button>
+      <Nav>
+        <Logo>Pathfinder Visualizer</Logo>
+        <NavButton onClick={runAStar}>A* Algorithm</NavButton>
+        <NavButton onClick={random}>random</NavButton>
+        <NavButton>Mazes</NavButton>
+        <NavButton>Algorithms</NavButton>
+        {restart ? (
+          <NavButton onClick={restartVisualizer}>Restart</NavButton>
+        ) : null}
       </Nav>
     </>
   );
