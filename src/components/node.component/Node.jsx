@@ -2,7 +2,17 @@ import React from "react";
 
 import { NodeCell, NodeStart, NodeEnd, NodePath } from "./Node.styles";
 
-const Node = ({ row, col, visited, path, endX, endY, startX, startY }) => {
+const Node = ({
+  row,
+  col,
+  visited,
+  path,
+  endX,
+  endY,
+  startX,
+  startY,
+  obstacle,
+}) => {
   return (
     <>
       {row === startX && col === startY ? (
@@ -12,7 +22,7 @@ const Node = ({ row, col, visited, path, endX, endY, startX, startY }) => {
       ) : path ? (
         <NodePath />
       ) : (
-        <NodeCell visited={visited} />
+        <NodeCell visited={visited} obstacle={obstacle} />
       )}
     </>
   );
