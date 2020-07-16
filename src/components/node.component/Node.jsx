@@ -2,10 +2,10 @@ import React from "react";
 
 import { NodeCell, NodeStart, NodeEnd, NodePath } from "./Node.styles";
 
-const Node = ({ row, col, visited, path, endX, endY }) => {
+const Node = ({ row, col, visited, path, endX, endY, startX, startY }) => {
   return (
     <>
-      {row === 0 && col === 0 ? (
+      {row === startX && col === startY ? (
         <NodeStart />
       ) : row === endX && col === endY ? (
         <NodeEnd />

@@ -6,19 +6,24 @@ import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
 
 const PathVisualizer = ({ runAStar }) => {
   const [table, setTable] = useState([]);
-  const [endX, setEndX] = useState(14);
-  const [endY, setEndY] = useState(14);
+  const [endX, setEndX] = useState(18);
+  const [endY, setEndY] = useState(17);
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
 
-  let size = 15;
+  // grid size X & Y
+  let size = 20;
+  // grid to store the i & j values of the loops
   let grid = [];
 
   useEffect(() => {
-    // these are the columns
+    // columns
     for (let i = 0; i < size; i++) {
       let column = [];
       grid[i] = column;
-      // these are the rows
+      // rows
       for (let j = 0; j < size; j++) {
+        // store obj on every node for A* Algorithm values
         grid[i].push({
           f: 0,
           g: 0,
@@ -32,42 +37,47 @@ const PathVisualizer = ({ runAStar }) => {
         });
       }
     }
+    // set grid to table state to render again
     setTable(grid);
 
     const nodeNeighbors = (i, j) => {
       let neighborsArr = [];
-      // adding the neighboors of each individual node
-      if (i < size - 1) {
-        neighborsArr.push(grid[i + 1][j]);
-      }
-      if (i > 0) {
-        neighborsArr.push(grid[i - 1][j]);
-      }
-      if (j < size - 1) {
-        neighborsArr.push(grid[i][j + 1]);
-      }
-      if (j > 0) {
-        neighborsArr.push(grid[i][j - 1]);
-      }
+      // adding the neighboors to each individual node
+      // and those get stored in the object node
+      // managing edges with if statements
+      if (i < size - 1) neighborsArr.push(grid[i + 1][j]);
+      if (i > 0) neighborsArr.push(grid[i - 1][j]);
+      if (j < size - 1) neighborsArr.push(grid[i][j + 1]);
+      if (j > 0) neighborsArr.push(grid[i][j - 1]);
+
       return neighborsArr;
     };
 
     // adding the neighbors to the node, once the grid is already built
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
+        // adding neighbors
         grid[i][j].neighbors = nodeNeighbors(i, j);
       }
     }
 
     // sending start & end node to algorithm function
     if (runAStar) {
-      const visitedNodes = aStarAlgorithm(grid[0][0], grid[endX][endY]);
-      animation(visitedNodes[0], visitedNodes[1]);
+      // algorithm only needs start and end, because
+      // each object has stored their neighbors
+      const algorithmResult = aStarAlgorithm(
+        grid[startX][startY],
+        grid[endX][endY]
+      );
+      aStarAnimation(algorithmResult[0], algorithmResult[1]);
     }
   }, [runAStar]);
 
-  const animation = (visitedNodes, path) => {
+  // run the animation with the closedSet arr from the algorithm function
+  const aStarAnimation = (visitedNodes, path) => {
+    // animation runs after algorithm is done
     for (let i = 0; i < visitedNodes.length; i++) {
+      // timeout to delay the loop for the animation
       setTimeout(() => {
         const oldNode = grid[visitedNodes[i].i][visitedNodes[i].j];
         const newGrid = grid.slice();
@@ -76,19 +86,23 @@ const PathVisualizer = ({ runAStar }) => {
           visited: true,
         };
         newGrid[visitedNodes[i].i][visitedNodes[i].j] = newNode;
+        // this will make the component render again, to display the nodes changing
         setTable(newGrid);
-        if (i === visitedNodes.length - 1) runPath(path);
+        // once the loop reaches it's final element, run rhe path animation
+        if (i === visitedNodes.length - 1) drawPath(path);
       }, 30 * i);
     }
   };
 
-  const runPath = (path) => {
+  // draw the final path, once the searching animation is done
+  const drawPath = (path) => {
     for (let j = 0; j < path.length; j++) {
       setTimeout(() => {
         const oldNode = grid[path[j].i][path[j].j];
         const newGrid = grid.slice();
         const newNode = {
           ...oldNode,
+          // updating the path nodes (blue nodes)
           path: true,
         };
         newGrid[path[j].i][path[j].j] = newNode;
@@ -96,6 +110,7 @@ const PathVisualizer = ({ runAStar }) => {
       }, 30 * j);
     }
   };
+
   return (
     <>
       <Rows>
@@ -111,6 +126,8 @@ const PathVisualizer = ({ runAStar }) => {
                   path={table[rowIndx][colIndx].path}
                   endX={endX}
                   endY={endY}
+                  startX={startX}
+                  startY={startY}
                 />
               ))}
             </Column>
