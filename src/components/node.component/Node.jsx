@@ -1,28 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { NodeCell, NodeStart, NodeEnd, NodePath } from "./Node.styles";
+import { screenDimensions } from "../../hooks/screen.size.hook";
 
-const Node = ({
-  row,
-  col,
-  visited,
-  path,
-  endX,
-  endY,
-  startX,
-  startY,
-  obstacle,
-}) => {
+const Node = ({ visited, path, start, end, obstacle, hovering }) => {
+  const windowSize = screenDimensions();
+
+  useEffect(() => {
+    console.log(windowSize);
+  }, []);
+
   return (
     <>
-      {col === startX && row === startY ? (
+      {start ? (
         <NodeStart />
-      ) : col === endX && row === endY ? (
+      ) : end ? (
         <NodeEnd />
       ) : path ? (
         <NodePath />
       ) : (
-        <NodeCell visited={visited} obstacle={obstacle} />
+        <NodeCell visited={visited} obstacle={obstacle} hovering={hovering} />
       )}
     </>
   );

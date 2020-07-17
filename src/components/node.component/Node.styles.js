@@ -1,5 +1,9 @@
 import styled, { keyframes, css } from "styled-components";
 
+import { colors } from "../../colors/colors";
+
+const { darkGrey, yellow, lightBlue, white } = colors;
+
 const NodeAnimation = keyframes`
 from {
   transform: scale(0.7, 0.7)
@@ -10,19 +14,39 @@ to {
 }
 `;
 
+const HoverNodeAnimation = keyframes`
+  from {
+    transform: scale(1.1, 1.1);
+    border: 3px solid ${yellow};
+  }
+
+  to {
+    transform: scale(1,1);
+    border: 3px solid ${lightBlue};
+  }
+`;
+
 export const NodeCell = styled.div`
   border-radius: 50%;
   height: 30px;
   width: 30px;
   margin: 1px;
   background-color: ${(props) =>
-    props.obstacle ? "#56cfe1" : props.visited ? "#ffd166" : "#FFFCFF"};
+    props.obstacle ? `${lightBlue}` : props.visited ? `${yellow}` : `${white}`};
   border: 3px solid
     ${(props) =>
-      props.obstacle ? "#56cfe1" : props.visited ? "#ffd166" : "#56cfe1"};
+      props.obstacle
+        ? `${lightBlue}`
+        : props.visited
+        ? `${yellow}`
+        : `${lightBlue}`};
   opacity: 0.5;
   animation: ${(props) =>
-    props.visited
+    props.hovering
+      ? css`
+          ${HoverNodeAnimation} 0.3s linear
+        `
+      : props.visited
       ? css`
           ${NodeAnimation} 0.8s linear
         `
@@ -31,6 +55,9 @@ export const NodeCell = styled.div`
           ${NodeAnimation} 0.6s linear
         `
       : "none"};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const NodePath = styled.div`
@@ -38,10 +65,13 @@ export const NodePath = styled.div`
   height: 30px;
   width: 30px;
   margin: 1px;
-  background-color: #ffd166;
+  background-color: ${yellow};
   opacity: 0.7;
-  border: 3px solid #001524;
+  border: 3px solid ${darkGrey};
   animation: ${NodeAnimation} 1s linear;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const NodeStart = styled.div`
@@ -49,9 +79,12 @@ export const NodeStart = styled.div`
   height: 30px;
   width: 30px;
   margin: 1px;
-  border: 3px solid #001524;
-  background-color: #ffd166;
+  border: 3px solid ${darkGrey};
+  background-color: ${yellow};
   opacity: 0.7;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const NodeEnd = styled.div`
@@ -59,7 +92,10 @@ export const NodeEnd = styled.div`
   height: 30px;
   width: 30px;
   margin: 1px;
-  border: 3px solid #001524;
-  background-color: #ffd166;
+  border: 3px solid ${darkGrey};
+  background-color: ${yellow};
   opacity: 0.7;
+  &:hover {
+    cursor: pointer;
+  }
 `;

@@ -4,6 +4,7 @@ import Node from "../node.component/Node";
 import NavBar from "../navbar.component/NavBar";
 import { VisualizerContainer, Rows, Column } from "./PathVisualizer.styles";
 import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
+import { screenDimensions } from "../../hooks/screen.size.hook";
 
 const PathVisualizer = () => {
   // complete grid
@@ -12,12 +13,15 @@ const PathVisualizer = () => {
   const [createRandom, setCreateRandom] = useState(false);
   // restart var that gets passed to navbar, to display btn or no
   const [restart, setRestart] = useState(false);
+  const [creatingObstacles, setCreatingObstacles] = useState(false);
+  const [movingStartNode, setMovingStartNode] = useState(false);
+  const [movingEndNode, setMovingEndNode] = useState(false);
   // hook to restart the DOM only
   const [restartDOM, setRestartDOM] = useState(false);
-  const [endX, setEndX] = useState(25);
-  const [endY, setEndY] = useState(12);
-  const [startX, setStartX] = useState(7);
-  const [startY, setStartY] = useState(3);
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
+  const [endX, setEndX] = useState(37);
+  const [endY, setEndY] = useState(15);
 
   // grid size X & Y
   let columns = 38;
@@ -39,24 +43,62 @@ const PathVisualizer = () => {
       grid[i] = column;
       // rows
       for (let j = 0; j < rows; j++) {
-        // store obj on every node for A* Algorithm values
-        grid[i].push({
-          f: 0,
-          g: 0,
-          h: 0,
-          j,
-          i,
-          neighbors: null,
-          parent: null,
-          visited: false,
-          path: false,
-          obstacle: randomObstacles(),
-        });
+        if (i === startX && j === startY) {
+          // store obj on every node for A* Algorithm values
+          grid[i].push({
+            f: 0,
+            g: 0,
+            h: 0,
+            j,
+            i,
+            neighbors: null,
+            parent: null,
+            visited: false,
+            path: false,
+            obstacle: false,
+            startNode: true,
+            endNode: false,
+          });
+        } else if (i === endX && j === endY) {
+          // store obj on every node for A* Algorithm values
+          grid[i].push({
+            f: 0,
+            g: 0,
+            h: 0,
+            j,
+            i,
+            neighbors: null,
+            parent: null,
+            visited: false,
+            path: false,
+            obstacle: false,
+            endNode: true,
+            startNode: false,
+          });
+        } else {
+          // store obj on every node for A* Algorithm values
+          grid[i].push({
+            f: 0,
+            g: 0,
+            h: 0,
+            j,
+            i,
+            neighbors: null,
+            parent: null,
+            visited: false,
+            path: false,
+            obstacle: randomObstacles(),
+            startNode: false,
+            endNode: false,
+            hovering: false,
+          });
+        }
       }
     }
     // set grid to table state to render again
     setTable(grid);
     setRestart(false);
+    console.log(screenDimensions());
   }, [createRandom, restartDOM]);
 
   // run the animation with the closedSet arr from the algorithm function
@@ -109,6 +151,50 @@ const PathVisualizer = () => {
     setTable(copyGrid);
   };
 
+  const moveStartNode = (i, j) => {
+    const oldStartNode = table[i][j];
+    const copyGrid = table.slice();
+    const newStartNode = {
+      ...oldStartNode,
+      startNode: true,
+    };
+    copyGrid[i][j] = newStartNode;
+    setTable(copyGrid);
+  };
+
+  const deleteStartNode = (i, j) => {
+    let oldStartNode = table[i][j];
+    let copyGrid = table.slice();
+    oldStartNode = {
+      ...oldStartNode,
+      startNode: false,
+    };
+    copyGrid[i][j] = oldStartNode;
+    setTable(copyGrid);
+  };
+
+  const moveEndNode = (i, j) => {
+    const oldEndNode = table[i][j];
+    const copyGrid = table.slice();
+    const newEndNode = {
+      ...oldEndNode,
+      endNode: true,
+    };
+    copyGrid[i][j] = newEndNode;
+    setTable(copyGrid);
+  };
+
+  const deleteEndNode = (i, j) => {
+    let oldEndNode = table[i][j];
+    let copyGrid = table.slice();
+    oldEndNode = {
+      ...oldEndNode,
+      endNode: false,
+    };
+    copyGrid[i][j] = oldEndNode;
+    setTable(copyGrid);
+  };
+
   const addNeighbors = () => {
     const nodeNeighbors = (i, j) => {
       let neighborsArr = [];
@@ -156,6 +242,51 @@ const PathVisualizer = () => {
   const restartVisualizer = () => {
     setRestartDOM((prevState) => !prevState);
     setCreateRandom(false);
+    setCreatingObstacles(false);
+  };
+
+  const nodeAnimation = (i, j) => {
+    let node = table[i][j];
+    let copyGrid = table.slice();
+    node = {
+      ...node,
+      hovering: true,
+    };
+    copyGrid[i][j] = node;
+    setTable(copyGrid);
+  };
+
+  const handleMouseDown = (i, j) => {
+    if (table[i][j].startNode) {
+      deleteStartNode(i, j);
+      setMovingStartNode(true);
+    } else if (table[i][j].endNode) {
+      deleteEndNode(i, j);
+      setMovingEndNode(true);
+    } else {
+      setCreatingObstacles(true);
+    }
+  };
+
+  const handleMouseMove = (i, j) => {
+    if (movingStartNode || movingEndNode) nodeAnimation(i, j);
+    if (creatingObstacles) createObstacle(i, j);
+  };
+
+  const handleMouseUp = (i, j) => {
+    if (movingStartNode) {
+      moveStartNode(i, j);
+      setMovingStartNode(false);
+      setStartX(i);
+      setStartY(j);
+    } else if (movingEndNode) {
+      moveEndNode(i, j);
+      setMovingEndNode(false);
+      setEndX(i);
+      setEndY(j);
+    } else {
+      setCreatingObstacles(false);
+    }
   };
 
   return (
@@ -175,18 +306,18 @@ const PathVisualizer = () => {
                   <div
                     key={rowIndx}
                     onClick={() => createObstacle(colIndx, rowIndx)}
+                    onMouseDown={() => handleMouseDown(colIndx, rowIndx)}
+                    onMouseMove={() => handleMouseMove(colIndx, rowIndx)}
+                    onMouseUp={() => handleMouseUp(colIndx, rowIndx)}
                   >
                     <Node
                       obstacle={row.obstacle}
                       key={rowIndx}
-                      row={rowIndx}
-                      col={colIndx}
                       visited={table[colIndx][rowIndx].visited}
                       path={table[colIndx][rowIndx].path}
-                      endX={endX}
-                      endY={endY}
-                      startX={startX}
-                      startY={startY}
+                      start={table[colIndx][rowIndx].startNode}
+                      end={table[colIndx][rowIndx].endNode}
+                      hovering={table[colIndx][rowIndx].hovering}
                     />
                   </div>
                 ))}
