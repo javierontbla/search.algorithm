@@ -4,6 +4,7 @@ import Node from "../node.component/Node";
 import NavBar from "../navbar.component/NavBar";
 import { Container, Rows, Columns, NodeContainer } from "./Grid.styles";
 import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
+import { dijkstraAlgorithm } from "../../algorithms/dijkstra.algorithm";
 
 const Grid = () => {
   const [grid, setGrid] = useState([]);
@@ -17,7 +18,7 @@ const Grid = () => {
   const [generatingObstacles, setGeneratingObstacles] = useState(false);
   const [movingStartNode, setMovingStartNode] = useState(false);
   const [movingEndNode, setMovingEndNode] = useState(false);
-  const [columns, setColumns] = useState(35);
+  const [columns, setColumns] = useState(30);
   const [rows, setRows] = useState(15);
   const [startI, setStartI] = useState(0);
   const [startJ, setStartJ] = useState(0);
@@ -55,6 +56,7 @@ const Grid = () => {
             obstacle: false,
             startNode: true,
             endNode: false,
+            distance: 0,
           });
         } else if (i === endI && j === endJ) {
           // store obj on every node for A* Algorithm values
@@ -71,6 +73,7 @@ const Grid = () => {
             obstacle: false,
             endNode: true,
             startNode: false,
+            distance: Infinity,
           });
         } else {
           // store obj on every node for A* Algorithm values
@@ -88,6 +91,7 @@ const Grid = () => {
             startNode: false,
             endNode: false,
             hovering: false,
+            distance: Infinity,
           });
         }
       }
@@ -198,6 +202,7 @@ const Grid = () => {
       node = {
         ...node,
         startNode: true,
+        distance: 0,
       };
     } else if (action === 2) {
       // move end
@@ -210,6 +215,7 @@ const Grid = () => {
       node = {
         ...node,
         startNode: false,
+        distance: Infinity,
       };
     } else if (action === 4) {
       // delete end node
@@ -269,6 +275,16 @@ const Grid = () => {
     searchingAnimation(result[0], result[1]);
   };
 
+  const executeDijkstra = () => {
+    createNeighbors();
+    const result = dijkstraAlgorithm(
+      grid,
+      grid[startI][startJ],
+      grid[endI][endJ]
+    );
+    searchingAnimation(result[0], result[1]);
+  };
+
   const restartingDOM = () => {
     setRestartDOM((p) => !p);
     setRestartBtn(false);
@@ -285,6 +301,7 @@ const Grid = () => {
       <Container>
         <NavBar
           executeAStar={() => executeAStar()}
+          executeDijkstra={() => executeDijkstra()}
           randomObstacles={() => createRandomObstacles()}
           restartingDOM={() => restartingDOM()}
           restartBtn={restartBtn}
