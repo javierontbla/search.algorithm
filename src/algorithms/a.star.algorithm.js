@@ -10,9 +10,9 @@ const calculateHeuristic = (currentNode, endNode) => {
 // function gets called with start and end node only
 // because, the nodes are objs that have their neighbors stored
 export const aStarAlgorithm = (start, end) => {
-  //
+  // nodes being evaluated
   let openSet = [];
-  //
+  // nodes done evaluating
   let closedSet = [];
   // answer path nodes
   let path = [];
@@ -87,6 +87,35 @@ export const aStarAlgorithm = (start, end) => {
       return "no viable solution";
     }
   }
-
   return [closedSet, path];
+};
+
+const generateNeighbors = (grid, columns, rows, startI, startJ, endI, endJ) => {
+  const nodeNeighbors = (i, j) => {
+    let neighborsArr = [];
+    // adding the neighboors to each individual node
+    // and those get stored in the object node
+    // managing edges with if statements
+    if (i < columns - 1) neighborsArr.push(grid[i + 1][j]);
+    if (i > 0) neighborsArr.push(grid[i - 1][j]);
+    if (j < rows - 1) neighborsArr.push(grid[i][j + 1]);
+    if (j > 0) neighborsArr.push(grid[i][j - 1]);
+    if (i > 0 && j > 0) neighborsArr.push(grid[i - 1][j - 1]);
+    if (i < columns - 1 && j < rows - 1) neighborsArr.push(grid[i + 1][j + 1]);
+    if (i > 0 && j < rows - 1) neighborsArr.push(grid[i - 1][j + 1]);
+    if (i < columns - 1 && j > 0) neighborsArr.push(grid[i + 1][j - 1]);
+
+    return neighborsArr;
+  };
+
+  // adding the neighbors to each node, once the grid is already built
+  for (let i = 0; i < columns; i++) {
+    for (let j = 0; j < rows; j++) {
+      // adding neighbors
+      grid[i][j].neighbors = nodeNeighbors(i, j);
+    }
+  }
+  grid[startI][startJ].obstacle = false;
+  grid[endI][endJ].obstacle = false;
+  return aStarAlgorithm(grid[startI][startJ], grid[endI][endJ]);
 };

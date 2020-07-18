@@ -2,17 +2,20 @@ import React from "react";
 
 import { Nav, Logo, NavButton } from "./NavBar.styles";
 
-const NavBar = ({ runAStar, random, restart, restartVisualizer }) => {
+const NavBar = ({
+  executeAStar,
+  randomObstacles,
+  restartingDOM,
+  restartBtn,
+}) => {
   return (
     <>
       <Nav>
         <Logo>Pathfinder Visualizer</Logo>
-        <NavButton onClick={runAStar}>A* Algorithm</NavButton>
-        <NavButton onClick={random}>random</NavButton>
-        <NavButton>Mazes</NavButton>
-        <NavButton>Algorithms</NavButton>
-        {restart ? (
-          <NavButton onClick={restartVisualizer}>Restart</NavButton>
+        <NavButton onClick={executeAStar}>A* Algorithm</NavButton>
+        <NavButton onClick={randomObstacles}>random</NavButton>
+        {restartBtn ? (
+          <NavButton onClick={restartingDOM}>Restart</NavButton>
         ) : null}
       </Nav>
     </>

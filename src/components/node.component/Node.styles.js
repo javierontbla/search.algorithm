@@ -27,9 +27,9 @@ const HoverNodeAnimation = keyframes`
 `;
 
 export const NodeCell = styled.div`
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  border-radius: 5px;
+  height: 40px;
+  width: 40px;
   margin: 1px;
   background-color: ${(props) =>
     props.obstacle ? `${lightBlue}` : props.visited ? `${yellow}` : `${white}`};
@@ -61,23 +61,23 @@ export const NodeCell = styled.div`
 `;
 
 export const NodePath = styled.div`
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  border-radius: 5px;
+  height: 40px;
+  width: 40px;
   margin: 1px;
   background-color: ${yellow};
   opacity: 0.7;
   border: 3px solid ${darkGrey};
-  animation: ${NodeAnimation} 1s linear;
+  animation: ${NodeAnimation} 0.8s linear;
   &:hover {
     cursor: pointer;
   }
 `;
 
 export const NodeStart = styled.div`
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  border-radius: 5px;
+  height: 40px;
+  width: 40px;
   margin: 1px;
   border: 3px solid ${darkGrey};
   background-color: ${yellow};
@@ -88,9 +88,9 @@ export const NodeStart = styled.div`
 `;
 
 export const NodeEnd = styled.div`
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  border-radius: 5px;
+  height: 40px;
+  width: 40px;
   margin: 1px;
   border: 3px solid ${darkGrey};
   background-color: ${yellow};

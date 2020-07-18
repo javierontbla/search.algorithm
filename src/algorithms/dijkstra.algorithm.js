@@ -1,5 +1,4 @@
 // Dijkstra Algorithm
-
 const dijkstraAlgorithm = (start, end) => {
   let activeNodes = [];
   let visitedNodes = [];
