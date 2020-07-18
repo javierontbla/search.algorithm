@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.styles";
 
-import NavBar from "./components/navbar.component/NavBar";
 import PathVisualizer from "./components/a.star.path.visualizer.component/PathVisualizer";
-import { PathVisualizerContainer } from "./App.styles";
+import Grid from "./components/grid.component/Grid";
+import { AppContainer } from "./App.styles";
 
 const App = () => {
+  const [currentNode, setCurrentNode] = useState(false);
+
+  const updateGrid = (node) => {
+    setCurrentNode(true);
+  };
+
   return (
     <>
-      <PathVisualizerContainer>
-        <PathVisualizer />
-      </PathVisualizerContainer>
+      <button onClick={() => updateGrid()}>test</button>
+      <AppContainer>
+        <PathVisualizer updateGrid={() => updateGrid()} />
+        <Grid currentNode={currentNode} />
+      </AppContainer>
     </>
   );
 };

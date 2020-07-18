@@ -98,7 +98,7 @@ const PathVisualizer = () => {
     // set grid to table state to render again
     setTable(grid);
     setRestart(false);
-    console.log(screenDimensions());
+    //console.log(screenDimensions());
   }, [createRandom, restartDOM]);
 
   // run the animation with the closedSet arr from the algorithm function
@@ -148,50 +148,6 @@ const PathVisualizer = () => {
       obstacle: true,
     };
     copyGrid[i][j] = newNode;
-    setTable(copyGrid);
-  };
-
-  const moveStartNode = (i, j) => {
-    const oldStartNode = table[i][j];
-    const copyGrid = table.slice();
-    const newStartNode = {
-      ...oldStartNode,
-      startNode: true,
-    };
-    copyGrid[i][j] = newStartNode;
-    setTable(copyGrid);
-  };
-
-  const deleteStartNode = (i, j) => {
-    let oldStartNode = table[i][j];
-    let copyGrid = table.slice();
-    oldStartNode = {
-      ...oldStartNode,
-      startNode: false,
-    };
-    copyGrid[i][j] = oldStartNode;
-    setTable(copyGrid);
-  };
-
-  const moveEndNode = (i, j) => {
-    const oldEndNode = table[i][j];
-    const copyGrid = table.slice();
-    const newEndNode = {
-      ...oldEndNode,
-      endNode: true,
-    };
-    copyGrid[i][j] = newEndNode;
-    setTable(copyGrid);
-  };
-
-  const deleteEndNode = (i, j) => {
-    let oldEndNode = table[i][j];
-    let copyGrid = table.slice();
-    oldEndNode = {
-      ...oldEndNode,
-      endNode: false,
-    };
-    copyGrid[i][j] = oldEndNode;
     setTable(copyGrid);
   };
 

@@ -7,7 +7,7 @@ const Node = ({ visited, path, start, end, obstacle, hovering }) => {
   const windowSize = screenDimensions();
 
   useEffect(() => {
-    console.log(windowSize);
+    //console.log(windowSize);
   }, []);
 
   return (

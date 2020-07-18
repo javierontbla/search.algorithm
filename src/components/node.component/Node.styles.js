@@ -17,12 +17,12 @@ to {
 const HoverNodeAnimation = keyframes`
   from {
     transform: scale(1.1, 1.1);
-    border: 3px solid ${yellow};
+    opacity: 0.8;
   }
 
   to {
     transform: scale(1,1);
-    border: 3px solid ${lightBlue};
+    opacity: 0.5;
   }
 `;
 
@@ -52,7 +52,7 @@ export const NodeCell = styled.div`
         `
       : props.obstacle
       ? css`
-          ${NodeAnimation} 0.6s linear
+          ${NodeAnimation} 0.3s linear
         `
       : "none"};
   &:hover {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const PathVisualizerContainer = styled.div`
+export const AppContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
