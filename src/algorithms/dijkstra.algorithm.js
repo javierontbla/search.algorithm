@@ -7,7 +7,7 @@ export const dijkstraAlgorithm = (grid, start, end) => {
   for (let i = 0; i < grid.length; i++) {
     let column = grid[i];
     for (let j = 0; j < column.length; j++) {
-      minQ.push(grid[i][j]);
+      minQ.unshift(grid[i][j]);
     }
   }
 
@@ -16,9 +16,9 @@ export const dijkstraAlgorithm = (grid, start, end) => {
     // delete current node from minQ array
     let minValue = minQ.shift();
 
+    // if node is an obstacle continue to next iteration
     if (minValue.obstacle) continue;
 
-    visited.push(minValue);
     if (minValue === end) {
       path.push(minValue);
 
@@ -29,6 +29,7 @@ export const dijkstraAlgorithm = (grid, start, end) => {
       break;
     }
 
+    visited.push(minValue);
     for (let i = 0; i < minValue.neighbors.length; i++) {
       let neighbor = minValue.neighbors[i];
       let tempDistance = minValue.distance + 1;
@@ -39,7 +40,6 @@ export const dijkstraAlgorithm = (grid, start, end) => {
       }
     }
   }
-
-  visited.sort((nodeA, nodeB) => nodeA.distance + nodeB.distance);
+  minQ.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
   return [visited, path];
 };

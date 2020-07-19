@@ -19,7 +19,7 @@ const Grid = () => {
   const [movingStartNode, setMovingStartNode] = useState(false);
   const [movingEndNode, setMovingEndNode] = useState(false);
   const [columns, setColumns] = useState(30);
-  const [rows, setRows] = useState(15);
+  const [rows, setRows] = useState(12);
   const [startI, setStartI] = useState(0);
   const [startJ, setStartJ] = useState(0);
   const [endI, setEndI] = useState(columns - 1);
@@ -175,12 +175,12 @@ const Grid = () => {
       // and those get stored in the object node
       // managing edges with if statements
       if (i < columns - 1) neighbors.push(grid[i + 1][j]);
-      if (i > 0) neighbors.push(grid[i - 1][j]);
       if (j < rows - 1) neighbors.push(grid[i][j + 1]);
+      if (i > 0) neighbors.push(grid[i - 1][j]);
       if (j > 0) neighbors.push(grid[i][j - 1]);
-      if (i > 0 && j > 0) neighbors.push(grid[i - 1][j - 1]);
       if (i < columns - 1 && j < rows - 1) neighbors.push(grid[i + 1][j + 1]);
       if (i > 0 && j < rows - 1) neighbors.push(grid[i - 1][j + 1]);
+      if (i > 0 && j > 0) neighbors.push(grid[i - 1][j - 1]);
       if (i < columns - 1 && j > 0) neighbors.push(grid[i + 1][j - 1]);
 
       return neighbors;

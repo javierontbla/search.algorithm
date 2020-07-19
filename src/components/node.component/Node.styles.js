@@ -16,7 +16,7 @@ to {
 
 const HoverNodeAnimation = keyframes`
   from {
-    transform: scale(1.1, 1.1);
+    transform: scale(1.08, 1.08);
     opacity: 0.8;
   }
 
@@ -27,13 +27,11 @@ const HoverNodeAnimation = keyframes`
 `;
 
 export const NodeCell = styled.div`
-  border-radius: 5px;
   height: 40px;
   width: 40px;
-  margin: 1px;
   background-color: ${(props) =>
     props.obstacle ? `${lightBlue}` : props.visited ? `${yellow}` : `${white}`};
-  border: 3px solid
+  border: 0.5px solid
     ${(props) =>
       props.obstacle
         ? `${lightBlue}`
@@ -44,15 +42,15 @@ export const NodeCell = styled.div`
   animation: ${(props) =>
     props.hovering
       ? css`
-          ${HoverNodeAnimation} 0.3s linear
+          ${HoverNodeAnimation} 0.4s linear
         `
       : props.visited
       ? css`
-          ${NodeAnimation} 0.8s linear
+          ${NodeAnimation} 0.6s linear
         `
       : props.obstacle
       ? css`
-          ${NodeAnimation} 0.3s linear
+          ${NodeAnimation} 0.4s linear
         `
       : "none"};
   &:hover {
@@ -61,13 +59,12 @@ export const NodeCell = styled.div`
 `;
 
 export const NodePath = styled.div`
-  border-radius: 5px;
   height: 40px;
   width: 40px;
-  margin: 1px;
   background-color: ${yellow};
   opacity: 0.7;
   border: 3px solid ${darkGrey};
+  border-radius: 5px;
   animation: ${NodeAnimation} 0.8s linear;
   &:hover {
     cursor: pointer;
@@ -75,10 +72,9 @@ export const NodePath = styled.div`
 `;
 
 export const NodeStart = styled.div`
-  border-radius: 5px;
   height: 40px;
   width: 40px;
-  margin: 1px;
+  border-radius: 5px;
   border: 3px solid ${darkGrey};
   background-color: ${yellow};
   opacity: 0.7;
@@ -88,10 +84,9 @@ export const NodeStart = styled.div`
 `;
 
 export const NodeEnd = styled.div`
-  border-radius: 5px;
   height: 40px;
   width: 40px;
-  margin: 1px;
+  border-radius: 5px;
   border: 3px solid ${darkGrey};
   background-color: ${yellow};
   opacity: 0.7;
