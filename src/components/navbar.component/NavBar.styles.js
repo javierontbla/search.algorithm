@@ -4,7 +4,7 @@ import { Navbar } from "react-bootstrap";
 
 import { colors } from "../../colors/colors";
 
-const { white, yellow } = colors;
+const { white, blue, green } = colors;
 
 const IconAnimation = keyframes`
   from {
@@ -25,46 +25,31 @@ const DropDownAnimation = keyframes`
     100% { opacity: 1; };
 `;
 
-const HoverAnimation = keyframes`
-   0% { 
-    background-color: #3f88c5;
-    opacity: 0;
-   };
- 100% { 
-   background-color: #3f88c5;
-   opacity: 1; 
-   };
+const ClickAnimation = keyframes`
+  from {
+    background-color: ${green};
+    color: ${white};
+  }
+
+  to {
+    background-color: ${white};
+    color: ${green};
+  }
 `;
 
 export const Nav = styled(Navbar)`
   display: flex;
-  background-color: #032b43 !important;
+  background-color: ${blue} !important;
   width: 100%;
   height: 70px;
 `;
 
 export const Logo = styled(Navbar.Brand)`
-  color: #f8f9fa !important;
+  color: ${white} !important;
   font-weight: bold !important;
-  font-size: 24px;
+  font-size: 1.7rem;
   font-family: Verdana, Geneva, sans-serif;
-`;
-
-export const NavButton = styled.button`
-  height: 40px;
-  padding: 8px;
-  font-size: 12px;
-  text-transform: uppercase;
-  border: 3px solid #f8f9fa;
-  border-radius: 10px;
-  background-color: transparent;
-  color: #f8f9fa;
-  margin-left: 8px;
-  font-family: Verdana, Geneva, sans-serif;
-
-  &:focus {
-    outline: none;
-  }
+  letter-spacing: 0.5px;
 `;
 
 export const PlayButton = styled(FontAwesomeIcon)`
@@ -74,12 +59,13 @@ export const PlayButton = styled(FontAwesomeIcon)`
           ${IconAnimation} 1s linear
         `
       : "none"};
-  font-size: ${(props) => (props.restart ? "45px" : "55px")};
+  font-size: ${(props) => (props.restart ? "45px" : "52px")};
   margin-left: 8px;
-  color: #136f63;
+  color: ${white};
+
   &:hover {
     cursor: pointer;
-    opacity: 0.9;
+    opacity: 0.8;
   }
 `;
 
@@ -97,6 +83,9 @@ export const PlayButtonContainer = styled.div`
 `;
 
 export const LogoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 22.5%;
 `;
 
@@ -113,27 +102,50 @@ export const SocialContainer = styled.div`
 `;
 
 export const Obstacles = styled(FontAwesomeIcon)`
-  font-size: 30px;
+  font-size: 28px;
   color: ${white};
 
   &:hover {
     cursor: pointer;
+    opacity: 0.9;
   }
 `;
 
 export const Info = styled(FontAwesomeIcon)`
-  font-size: 35px;
+  font-size: 31px;
   color: ${white};
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+`;
+
+export const Icon = styled(FontAwesomeIcon)`
+  font-size: ${(props) => (props.github ? "38px" : "16px")};
+  color: ${white};
+  margin-left: 6px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+`;
+
+export const LogoIcon = styled.div`
+  width: 28px;
+  height: 28px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(${(props) => `${props.img}`});
+  background-size: 100% 100%;
 `;
 
 export const Content = styled.div`
   display: none;
   position: absolute;
   height: 120px;
-  width: 100%;
-  margin-top: 10px;
-  top: 35px;
-  border-radius: 2px;
+  width: 200px;
+  top: 45px;
   animation: ${DropDownAnimation} 0.2s ease-out;
   z-index: 1;
   overflow: hidden;
@@ -145,11 +157,12 @@ export const Menu = styled.div`
   align-items: center;
   justify-content: center;
   color: ${white};
-  font-size: 19px;
+  font-size: 1.2rem;
   position: relative;
   font-family: Verdana, Geneva, sans-serif;
   font-weight: bold;
   height: 60px;
+  letter-spacing: 0.5px;
 
   &:hover {
     cursor: pointer;
@@ -158,6 +171,9 @@ export const Menu = styled.div`
     display: flex;
     flex-direction: column;
   }
+  &:hover ${Icon} {
+    opacity: 0.9;
+  }
 `;
 
 export const Button = styled.button`
@@ -165,29 +181,27 @@ export const Button = styled.button`
   color: ${white};
   font-size: 16px;
   padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   width: 100%;
-  background-color: #032b43;
+  background-color: ${blue};
   border: none;
   height: 40px;
   text-transform: uppercase;
   font-weight: bold;
   font-family: Verdana, Geneva, sans-serif;
   letter-spacing: 1px;
-  transition: border-bottom 0.8s;
-  border-bottom: 3px solid transparent;
+  transition: background-color, 0.6s;
+  border-bottom: 4px solid transparent;
 
   &:hover {
     cursor: pointer;
-    border-bottom: 3px solid ${yellow};
+    background-color: ${green};
   }
   &:focus {
     outline: none;
-    background-color: ${yellow};
+    animation: ${ClickAnimation} 1s ease;
+    background-color: ${white};
+    color: ${green};
   }
-`;
-
-export const Icon = styled(FontAwesomeIcon)`
-  font-size: ${(props) => (props.github ? "36px" : "16px")};
-  color: ${white};
-  margin-left: 6px;
 `;

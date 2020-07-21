@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   faCarSide,
-  faMountain,
+  faBuilding,
   faMapPin,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -30,7 +30,7 @@ const Node = ({ visited, path, start, end, obstacle, hovering }) => {
         <NodePath />
       ) : obstacle ? (
         <NodeCell obstacle={obstacle}>
-          <Obstacle icon={faMountain} />
+          <Obstacle icon={faBuilding} />
         </NodeCell>
       ) : (
         <NodeCell visited={visited} hovering={hovering} />

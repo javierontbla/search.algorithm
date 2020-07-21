@@ -3,7 +3,7 @@ import {
   faPlayCircle,
   faPauseCircle,
   faRedoAlt,
-  faMountain,
+  faBuilding,
   faInfoCircle,
   faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
@@ -19,12 +19,15 @@ import {
   Content,
   Button,
   Icon,
+  LogoIcon,
   PlayButtonContainer,
   AlgorithmsContainer,
   LogoContainer,
   MazesContainer,
   SocialContainer,
 } from "./NavBar.styles";
+
+import Nodes from "./logo.svg";
 
 const NavBar = ({
   executeAStar,
@@ -36,18 +39,28 @@ const NavBar = ({
   const [activeIcon, setActiveIcon] = useState(faPlayCircle);
   const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
 
-  const handleIcon = () => {
-    activeIcon === faPlayCircle
-      ? setActiveIcon(faPauseCircle)
-      : setActiveIcon(faPlayCircle);
+  const executeAlgorithm = () => {
+    if (!currentAlgorithm) return;
 
-    if (currentAlgorithm === "a-star") executeAStar();
-    if (currentAlgorithm === "dijkstra") executeDijkstra();
+    setActiveIcon(faPauseCircle);
+    if (currentAlgorithm === 1) executeAStar();
+    if (currentAlgorithm === 2) executeDijkstra();
   };
 
-  const handleChoosenAlgorithm = (algorithm) => {
-    if (algorithm === "a-star") setCurrentAlgorithm("a-star");
-    if (algorithm === "dijkstra") setCurrentAlgorithm("dijkstra");
+  const storeAlgorithm = (algorithm) => {
+    switch (algorithm) {
+      case 1:
+        setCurrentAlgorithm(1);
+        return;
+      case 2:
+        setCurrentAlgorithm(2);
+        return;
+    }
+  };
+
+  const restartDom = () => {
+    restartingDOM();
+    setActiveIcon(faPlayCircle);
   };
 
   return (
@@ -55,6 +68,9 @@ const NavBar = ({
       <Nav>
         <LogoContainer>
           <Logo>PATHFINDER VISUALIZER</Logo>
+          <span>
+            <LogoIcon img={Nodes} />
+          </span>
         </LogoContainer>
         <AlgorithmsContainer>
           <Menu>
@@ -63,13 +79,9 @@ const NavBar = ({
               <Icon icon={faCaretDown} />
             </span>
             <Content>
-              <Button onClick={() => handleChoosenAlgorithm("a-star")}>
-                A*
-              </Button>
-              <Button onClick={() => handleChoosenAlgorithm("dijkstra")}>
-                Dijkstra
-              </Button>
-              <Button onClick={() => handleChoosenAlgorithm()}>BFS</Button>
+              <Button onClick={() => storeAlgorithm(1)}>A*</Button>
+              <Button onClick={() => storeAlgorithm(2)}>Dijkstra</Button>
+              <Button onClick={() => storeAlgorithm()}>BFS</Button>
             </Content>
           </Menu>
         </AlgorithmsContainer>
@@ -78,13 +90,13 @@ const NavBar = ({
           {restartBtn ? (
             <PlayButton
               icon={faRedoAlt}
-              onClick={() => restartingDOM()}
+              onClick={() => restartDom()}
               restart={true}
             />
           ) : (
-            <PlayButton icon={activeIcon} onClick={() => handleIcon()} />
+            <PlayButton icon={activeIcon} onClick={() => executeAlgorithm()} />
           )}
-          <Obstacles onClick={randomObstacles} icon={faMountain} />
+          <Obstacles onClick={randomObstacles} icon={faBuilding} />
         </PlayButtonContainer>
         <MazesContainer>
           <Menu>
@@ -100,7 +112,12 @@ const NavBar = ({
           </Menu>
         </MazesContainer>
         <SocialContainer>
-          <Icon icon={faGithub} github={true} />
+          <a
+            href={"https://github.com/javierontbla/search.algorithm"}
+            target="_blank"
+          >
+            <Icon icon={faGithub} github={true} />
+          </a>
         </SocialContainer>
       </Nav>
     </>

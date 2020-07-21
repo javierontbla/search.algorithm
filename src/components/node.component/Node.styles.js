@@ -3,16 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { colors } from "../../colors/colors";
 
-const { darkGrey, yellow, lightBlue, white, green } = colors;
+const { yellow, lightBlue, white, green, red, blue, black } = colors;
 
 const NodeAnimation = keyframes`
-from {
-  transform: scale(0.7, 0.7)
-}
+  from {
+    transform: scale(0.7, 0.7)
+  }
 
-to {
-  transform: scale(1, 1)
-}
+  to {
+    transform: scale(1, 1)
+  }
 `;
 
 const HoverNodeAnimation = keyframes`
@@ -31,16 +31,11 @@ export const NodeCell = styled.div`
   align-items: center;
   height: 45px;
   width: 45px;
-  border-radius: 5px;
   background-color: ${(props) =>
-    props.obstacle ? "none" : props.visited ? `${lightBlue}` : `${white}`};
+    props.obstacle ? "none" : props.visited ? `${yellow}` : `${white}`};
   border: 1.5px solid
     ${(props) =>
-      props.obstacle
-        ? `${white}`
-        : props.visited
-        ? `${white}`
-        : `${lightBlue}`};
+      props.obstacle ? `${white}` : props.visited ? `${white}` : `${blue}`};
   opacity: 0.9;
   animation: ${(props) =>
     props.hovering
@@ -69,7 +64,6 @@ export const NodePath = styled.div`
   opacity: 0.9;
   border: 1.5px solid ${white};
   animation: ${NodeAnimation} 0.8s ease;
-  border-radius: 5px;
   &:hover {
     cursor: pointer;
   }
@@ -84,10 +78,10 @@ export const NodeStart = styled.div`
   width: 45px;
   border: 1.5px solid ${white};
   opacity: 0.9;
+  margin: 1px;
   &:hover {
     cursor: pointer;
   }
-  margin: 1px;
 `;
 
 export const NodeEnd = styled.div`
@@ -106,7 +100,7 @@ export const NodeEnd = styled.div`
 
 export const Car = styled(FontAwesomeIcon)`
   font-size: 28px;
-  color: #136f63;
+  color: ${black};
 `;
 
 export const Obstacle = styled(FontAwesomeIcon)`
@@ -116,5 +110,5 @@ export const Obstacle = styled(FontAwesomeIcon)`
 
 export const Pin = styled(FontAwesomeIcon)`
   font-size: 28px;
-  color: #df2935;
+  color: ${red};
 `;
