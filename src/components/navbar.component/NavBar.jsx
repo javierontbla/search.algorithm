@@ -3,18 +3,22 @@ import {
   faPlayCircle,
   faPauseCircle,
   faRedoAlt,
-  faTree,
+  faMountain,
+  faInfoCircle,
+  faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 import {
   Nav,
-  DropDown,
-  Item,
   Logo,
-  NavButton,
   PlayButton,
-  Content,
   Obstacles,
+  Info,
+  Menu,
+  Content,
+  Button,
+  Icon,
   PlayButtonContainer,
   AlgorithmsContainer,
   LogoContainer,
@@ -30,11 +34,20 @@ const NavBar = ({
   restartBtn,
 }) => {
   const [activeIcon, setActiveIcon] = useState(faPlayCircle);
+  const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
 
   const handleIcon = () => {
     activeIcon === faPlayCircle
       ? setActiveIcon(faPauseCircle)
       : setActiveIcon(faPlayCircle);
+
+    if (currentAlgorithm === "a-star") executeAStar();
+    if (currentAlgorithm === "dijkstra") executeDijkstra();
+  };
+
+  const handleChoosenAlgorithm = (algorithm) => {
+    if (algorithm === "a-star") setCurrentAlgorithm("a-star");
+    if (algorithm === "dijkstra") setCurrentAlgorithm("dijkstra");
   };
 
   return (
@@ -44,15 +57,24 @@ const NavBar = ({
           <Logo>PATHFINDER VISUALIZER</Logo>
         </LogoContainer>
         <AlgorithmsContainer>
-          <DropDown title="ALGORITHMS">
+          <Menu>
+            ALGORITHMS
+            <span>
+              <Icon icon={faCaretDown} />
+            </span>
             <Content>
-              <Item onClick={executeAStar}>A*</Item>
-              <Item onClick={executeDijkstra}>Dijkstra</Item>
-              <Item>BFS</Item>
+              <Button onClick={() => handleChoosenAlgorithm("a-star")}>
+                A*
+              </Button>
+              <Button onClick={() => handleChoosenAlgorithm("dijkstra")}>
+                Dijkstra
+              </Button>
+              <Button onClick={() => handleChoosenAlgorithm()}>BFS</Button>
             </Content>
-          </DropDown>
+          </Menu>
         </AlgorithmsContainer>
         <PlayButtonContainer>
+          <Info icon={faInfoCircle} />
           {restartBtn ? (
             <PlayButton
               icon={faRedoAlt}
@@ -62,12 +84,24 @@ const NavBar = ({
           ) : (
             <PlayButton icon={activeIcon} onClick={() => handleIcon()} />
           )}
-          <Obstacles onClick={randomObstacles} icon={faTree} />
+          <Obstacles onClick={randomObstacles} icon={faMountain} />
         </PlayButtonContainer>
         <MazesContainer>
-          <DropDown title="MAZES"></DropDown>
+          <Menu>
+            MAZES
+            <span>
+              <Icon icon={faCaretDown} />
+            </span>
+            <Content>
+              <Button>maze1</Button>
+              <Button>maze2</Button>
+              <Button>maze3</Button>
+            </Content>
+          </Menu>
         </MazesContainer>
-        <SocialContainer></SocialContainer>
+        <SocialContainer>
+          <Icon icon={faGithub} github={true} />
+        </SocialContainer>
       </Nav>
     </>
   );

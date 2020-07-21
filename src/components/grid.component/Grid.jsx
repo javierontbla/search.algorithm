@@ -19,7 +19,7 @@ const Grid = () => {
   const [movingStartNode, setMovingStartNode] = useState(false);
   const [movingEndNode, setMovingEndNode] = useState(false);
   const [columns, setColumns] = useState(30);
-  const [rows, setRows] = useState(12);
+  const [rows, setRows] = useState(15);
   const [startI, setStartI] = useState(0);
   const [startJ, setStartJ] = useState(0);
   const [endI, setEndI] = useState(columns - 1);

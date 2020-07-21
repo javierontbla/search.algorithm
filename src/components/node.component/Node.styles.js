@@ -29,8 +29,8 @@ export const NodeCell = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
   border-radius: 5px;
   background-color: ${(props) =>
     props.obstacle ? "none" : props.visited ? `${lightBlue}` : `${white}`};
@@ -63,8 +63,8 @@ export const NodeCell = styled.div`
 `;
 
 export const NodePath = styled.div`
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
   background-color: ${green};
   opacity: 0.9;
   border: 1.5px solid ${white};
@@ -80,8 +80,8 @@ export const NodeStart = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
   border: 1.5px solid ${white};
   opacity: 0.9;
   &:hover {
@@ -94,8 +94,8 @@ export const NodeEnd = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
   border: 1.5px solid ${white};
   opacity: 0.9;
   &:hover {
@@ -106,12 +106,12 @@ export const NodeEnd = styled.div`
 
 export const Car = styled(FontAwesomeIcon)`
   font-size: 28px;
-  color: ${lightBlue};
+  color: #136f63;
 `;
 
 export const Obstacle = styled(FontAwesomeIcon)`
   font-size: 28px;
-  color: #136f63;
+  color: #032b43;
 `;
 
 export const Pin = styled(FontAwesomeIcon)`
