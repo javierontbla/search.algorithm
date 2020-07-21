@@ -2,4 +2,6 @@
 
 ### `Created with React and Styled-Components`
 
-![logo](/public/logo.svg)
+<p align="center">
+  <img src="/public/logo.svg" />
+</p>
