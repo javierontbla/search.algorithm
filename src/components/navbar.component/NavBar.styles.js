@@ -56,7 +56,7 @@ export const PlayButton = styled(FontAwesomeIcon)`
   animation: ${(props) =>
     props.restart
       ? css`
-          ${IconAnimation} 1s linear
+          ${IconAnimation} 0.6s linear
         `
       : "none"};
   font-size: ${(props) => (props.restart ? "45px" : "52px")};
@@ -150,6 +150,7 @@ export const Content = styled.div`
   z-index: 1;
   overflow: hidden;
   border-collapse: separate;
+  border-radius: 5px;
 `;
 
 export const Menu = styled.div`
@@ -179,7 +180,7 @@ export const Menu = styled.div`
 export const Button = styled.button`
   display: block;
   color: ${white};
-  font-size: 16px;
+  font-size: 0.9rem;
   padding: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -200,7 +201,7 @@ export const Button = styled.button`
   }
   &:focus {
     outline: none;
-    animation: ${ClickAnimation} 1s ease;
+    animation: ${ClickAnimation} 0.6s ease;
     background-color: ${white};
     color: ${green};
   }

@@ -5,25 +5,25 @@ import NavBar from "../navbar.component/NavBar";
 import { Container, Rows, Columns, NodeContainer } from "./Grid.styles";
 import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
 import { dijkstraAlgorithm } from "../../algorithms/dijkstra.algorithm";
+import { bfsAlgorithm } from "../../algorithms/bfs.algorithm";
 
 const Grid = () => {
   const [grid, setGrid] = useState([]);
   // hook to restart the DOM only
   const [restartDOM, setRestartDOM] = useState(false);
+  // restart var that gets passed to navbar, to display btn or no
   const [restartBtn, setRestartBtn] = useState(false);
   // create random obstacle across the grid
   const [randomObstacles, setRandomObstacles] = useState(false);
-  // restart var that gets passed to navbar, to display btn or no
-  //const [restart, setRestart] = useState(false);
   const [generatingObstacles, setGeneratingObstacles] = useState(false);
   const [movingStartNode, setMovingStartNode] = useState(false);
   const [movingEndNode, setMovingEndNode] = useState(false);
   const [columns, setColumns] = useState(30);
   const [rows, setRows] = useState(15);
-  const [startI, setStartI] = useState(0);
-  const [startJ, setStartJ] = useState(0);
-  const [endI, setEndI] = useState(columns - 1);
-  const [endJ, setEndJ] = useState(rows - 1);
+  const [startI, setStartI] = useState(5);
+  const [startJ, setStartJ] = useState(7);
+  const [endI, setEndI] = useState(columns - 6);
+  const [endJ, setEndJ] = useState(rows - 8);
 
   useEffect(() => {
     // grid to store the i & j values of the loops
@@ -52,6 +52,7 @@ const Grid = () => {
             neighbors: null,
             parent: null,
             visited: false,
+            visitedBfs: false,
             path: false,
             obstacle: false,
             startNode: true,
@@ -69,6 +70,7 @@ const Grid = () => {
             neighbors: null,
             parent: null,
             visited: false,
+            visitedBfs: false,
             path: false,
             obstacle: false,
             endNode: true,
@@ -86,6 +88,7 @@ const Grid = () => {
             neighbors: null,
             parent: null,
             visited: false,
+            visitedBfs: false,
             path: false,
             obstacle: obstacles(),
             startNode: false,
@@ -118,12 +121,13 @@ const Grid = () => {
         setGrid(gridCopy);
         // once the loop reaches it's final element, run rhe path animation
         if (i === visitedNodes.length - 1) pathAnimation(path);
-      }, 140 * i);
+      }, 120 * i);
     }
   };
 
   // draw the final path, once the searching animation is done
   const pathAnimation = (path) => {
+    path.reverse();
     for (let j = 0; j < path.length; j++) {
       setTimeout(() => {
         let nodePath = grid[path[j].i][path[j].j];
@@ -136,7 +140,7 @@ const Grid = () => {
         gridCopy[path[j].i][path[j].j] = nodePath;
         setGrid(gridCopy);
         if (j === path.length - 1) setRestartBtn(true);
-      }, 140 * j);
+      }, 120 * j);
     }
   };
 
@@ -285,15 +289,21 @@ const Grid = () => {
     searchingAnimation(result[0], result[1]);
   };
 
+  const executeBfs = () => {
+    createNeighbors();
+    const result = bfsAlgorithm(grid[startI][startJ], grid[endI][endJ]);
+    searchingAnimation(result[0], result[1]);
+  };
+
   const restartingDOM = () => {
     setRestartDOM((p) => !p);
     setRestartBtn(false);
     setRandomObstacles(false);
     setGeneratingObstacles(false);
-    setStartI(0);
-    setStartJ(0);
-    setEndI(columns - 1);
-    setEndJ(rows - 1);
+    setStartI(5);
+    setStartJ(7);
+    setEndI(columns - 6);
+    setEndJ(rows - 8);
   };
 
   return (
@@ -302,6 +312,7 @@ const Grid = () => {
         <NavBar
           executeAStar={() => executeAStar()}
           executeDijkstra={() => executeDijkstra()}
+          executeBfs={() => executeBfs()}
           randomObstacles={() => createRandomObstacles()}
           restartingDOM={() => restartingDOM()}
           restartBtn={restartBtn}

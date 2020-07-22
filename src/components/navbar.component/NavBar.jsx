@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   faPlayCircle,
-  faPauseCircle,
   faRedoAlt,
   faBuilding,
   faInfoCircle,
@@ -32,19 +31,19 @@ import Nodes from "./logo.svg";
 const NavBar = ({
   executeAStar,
   executeDijkstra,
+  executeBfs,
   randomObstacles,
   restartingDOM,
   restartBtn,
 }) => {
-  const [activeIcon, setActiveIcon] = useState(faPlayCircle);
   const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
 
   const executeAlgorithm = () => {
     if (!currentAlgorithm) return;
 
-    setActiveIcon(faPauseCircle);
     if (currentAlgorithm === 1) executeAStar();
     if (currentAlgorithm === 2) executeDijkstra();
+    if (currentAlgorithm === 3) executeBfs();
   };
 
   const storeAlgorithm = (algorithm) => {
@@ -55,12 +54,16 @@ const NavBar = ({
       case 2:
         setCurrentAlgorithm(2);
         return;
+      case 3:
+        setCurrentAlgorithm(3);
+        return;
+      default:
+        return;
     }
   };
 
   const restartDom = () => {
     restartingDOM();
-    setActiveIcon(faPlayCircle);
   };
 
   return (
@@ -79,9 +82,9 @@ const NavBar = ({
               <Icon icon={faCaretDown} />
             </span>
             <Content>
-              <Button onClick={() => storeAlgorithm(1)}>A*</Button>
-              <Button onClick={() => storeAlgorithm(2)}>Dijkstra</Button>
-              <Button onClick={() => storeAlgorithm()}>BFS</Button>
+              <Button onClick={() => storeAlgorithm(1)}>A* (fast)</Button>
+              <Button onClick={() => storeAlgorithm(2)}>Dijkstra (slow)</Button>
+              <Button onClick={() => storeAlgorithm(3)}>BFS (slow)</Button>
             </Content>
           </Menu>
         </AlgorithmsContainer>
@@ -91,10 +94,13 @@ const NavBar = ({
             <PlayButton
               icon={faRedoAlt}
               onClick={() => restartDom()}
-              restart={true}
+              restart={"true"}
             />
           ) : (
-            <PlayButton icon={activeIcon} onClick={() => executeAlgorithm()} />
+            <PlayButton
+              icon={faPlayCircle}
+              onClick={() => executeAlgorithm()}
+            />
           )}
           <Obstacles onClick={randomObstacles} icon={faBuilding} />
         </PlayButtonContainer>
@@ -116,7 +122,7 @@ const NavBar = ({
             href={"https://github.com/javierontbla/search.algorithm"}
             target="_blank"
           >
-            <Icon icon={faGithub} github={true} />
+            <Icon icon={faGithub} github={"true"} />
           </a>
         </SocialContainer>
       </Nav>
