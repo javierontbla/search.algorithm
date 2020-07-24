@@ -32,6 +32,7 @@ const NavBar = ({
   executeAStar,
   executeDijkstra,
   executeBfs,
+  executePrims,
   randomObstacles,
   restartingDOM,
   restartBtn,
@@ -111,7 +112,7 @@ const NavBar = ({
               <Icon icon={faCaretDown} />
             </span>
             <Content>
-              <Button>maze1</Button>
+              <Button onClick={executePrims}>maze1</Button>
               <Button>maze2</Button>
               <Button>maze3</Button>
             </Content>

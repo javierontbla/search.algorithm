@@ -65,7 +65,7 @@ export const PlayButton = styled(FontAwesomeIcon)`
 
   &:hover {
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 `;
 
@@ -127,7 +127,7 @@ export const Icon = styled(FontAwesomeIcon)`
 
   &:hover {
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 `;
 

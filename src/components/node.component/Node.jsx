@@ -15,7 +15,7 @@ import {
   Pin,
 } from "./Node.styles";
 
-const Node = ({ visited, path, start, end, obstacle, hovering }) => {
+const Node = ({ visited, path, start, end, obstacle, hovering, maze }) => {
   return (
     <>
       {start ? (
@@ -28,12 +28,14 @@ const Node = ({ visited, path, start, end, obstacle, hovering }) => {
         </NodeEnd>
       ) : path ? (
         <NodePath />
+      ) : maze ? (
+        <NodeCell maze={maze} />
       ) : obstacle ? (
         <NodeCell obstacle={obstacle}>
           <Obstacle icon={faBuilding} />
         </NodeCell>
       ) : (
-        <NodeCell visited={visited} hovering={hovering} />
+        <NodeCell visited={visited} hovering={hovering} maze={maze} />
       )}
     </>
   );

@@ -32,11 +32,17 @@ export const NodeCell = styled.div`
   height: 45px;
   width: 45px;
   background-color: ${(props) =>
-    props.obstacle ? "none" : props.visited ? `${yellow}` : `${white}`};
+    props.maze
+      ? `${blue}`
+      : props.obstacle
+      ? "none"
+      : props.visited
+      ? `${yellow}`
+      : `${white}`};
   border: 1.5px solid
     ${(props) =>
       props.obstacle ? `${white}` : props.visited ? `${white}` : `${blue}`};
-  opacity: 0.9;
+  opacity: ${(props) => (props.maze ? "1" : "0.9")};
   animation: ${(props) =>
     props.hovering
       ? css`

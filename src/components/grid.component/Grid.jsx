@@ -6,6 +6,7 @@ import { Container, Rows, Columns, NodeContainer } from "./Grid.styles";
 import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
 import { dijkstraAlgorithm } from "../../algorithms/dijkstra.algorithm";
 import { bfsAlgorithm } from "../../algorithms/bfs.algorithm";
+import { primsAlgorithm } from "../../mazes.algorithms/prims.algorithm";
 
 const Grid = () => {
   const [grid, setGrid] = useState([]);
@@ -58,6 +59,7 @@ const Grid = () => {
             startNode: true,
             endNode: false,
             distance: 0,
+            maze: false,
           });
         } else if (i === endI && j === endJ) {
           // store obj on every node for A* Algorithm values
@@ -76,6 +78,7 @@ const Grid = () => {
             endNode: true,
             startNode: false,
             distance: Infinity,
+            maze: false,
           });
         } else {
           // store obj on every node for A* Algorithm values
@@ -95,6 +98,7 @@ const Grid = () => {
             endNode: false,
             hovering: false,
             distance: Infinity,
+            maze: false,
           });
         }
       }
@@ -121,6 +125,24 @@ const Grid = () => {
         setGrid(gridCopy);
         // once the loop reaches it's final element, run rhe path animation
         if (i === visitedNodes.length - 1) pathAnimation(path);
+      }, 120 * i);
+    }
+  };
+
+  // maze creation animation
+  const mazeAnimation = (maze) => {
+    for (let i = 0; i < maze.length; i++) {
+      // timeout to delay the loop for the animation
+      setTimeout(() => {
+        let mazeNode = grid[maze[i].i][maze[i].j];
+        let gridCopy = grid.slice();
+        mazeNode = {
+          ...mazeNode,
+          obstacle: true,
+        };
+        gridCopy[maze[i].i][maze[i].j] = mazeNode;
+        // this will make the component render again, to display the nodes changing
+        setGrid(gridCopy);
       }, 120 * i);
     }
   };
@@ -172,7 +194,7 @@ const Grid = () => {
     setRandomObstacles((p) => !p);
   };
 
-  const createNeighbors = () => {
+  const createNeighbors = (maze) => {
     const nodeNeighbors = (i, j) => {
       let neighbors = [];
       // adding the neighboors to each individual node
@@ -182,10 +204,12 @@ const Grid = () => {
       if (j < rows - 1) neighbors.push(grid[i][j + 1]);
       if (i > 0) neighbors.push(grid[i - 1][j]);
       if (j > 0) neighbors.push(grid[i][j - 1]);
-      if (i < columns - 1 && j < rows - 1) neighbors.push(grid[i + 1][j + 1]);
-      if (i > 0 && j < rows - 1) neighbors.push(grid[i - 1][j + 1]);
-      if (i > 0 && j > 0) neighbors.push(grid[i - 1][j - 1]);
-      if (i < columns - 1 && j > 0) neighbors.push(grid[i + 1][j - 1]);
+      if (!maze) {
+        if (i < columns - 1 && j < rows - 1) neighbors.push(grid[i + 1][j + 1]);
+        if (i > 0 && j < rows - 1) neighbors.push(grid[i - 1][j + 1]);
+        if (i > 0 && j > 0) neighbors.push(grid[i - 1][j - 1]);
+        if (i < columns - 1 && j > 0) neighbors.push(grid[i + 1][j - 1]);
+      }
 
       return neighbors;
     };
@@ -295,6 +319,11 @@ const Grid = () => {
     searchingAnimation(result[0], result[1]);
   };
 
+  const executePrims = () => {
+    createNeighbors(true);
+    mazeAnimation(primsAlgorithm(grid[0][0]));
+  };
+
   const restartingDOM = () => {
     setRestartDOM((p) => !p);
     setRestartBtn(false);
@@ -313,6 +342,7 @@ const Grid = () => {
           executeAStar={() => executeAStar()}
           executeDijkstra={() => executeDijkstra()}
           executeBfs={() => executeBfs()}
+          executePrims={() => executePrims()}
           randomObstacles={() => createRandomObstacles()}
           restartingDOM={() => restartingDOM()}
           restartBtn={restartBtn}
@@ -337,6 +367,7 @@ const Grid = () => {
                       start={grid[cIndx][rIndx].startNode}
                       end={grid[cIndx][rIndx].endNode}
                       hovering={grid[cIndx][rIndx].hovering}
+                      maze={grid[cIndx][rIndx].maze}
                     />
                   </NodeContainer>
                 ))}
