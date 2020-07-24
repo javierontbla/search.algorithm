@@ -6,7 +6,7 @@ import { Container, Rows, Columns, NodeContainer } from "./Grid.styles";
 import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
 import { dijkstraAlgorithm } from "../../algorithms/dijkstra.algorithm";
 import { bfsAlgorithm } from "../../algorithms/bfs.algorithm";
-import { primsAlgorithm } from "../../mazes.algorithms/prims.algorithm";
+import { recursiveDivision } from "../../mazes.algorithms/recursive.division.algorithm";
 
 const Grid = () => {
   const [grid, setGrid] = useState([]);
@@ -321,7 +321,9 @@ const Grid = () => {
 
   const executePrims = () => {
     createNeighbors(true);
-    mazeAnimation(primsAlgorithm(grid[0][0]));
+    const result = recursiveDivision(grid, columns, rows);
+    const copy = result.slice();
+    setGrid(copy);
   };
 
   const restartingDOM = () => {
