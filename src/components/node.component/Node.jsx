@@ -34,7 +34,7 @@ const Node = ({ visited, path, start, end, obstacle, hovering, maze }) => {
       ) : path ? (
         <NodePath />
       ) : maze ? (
-        <NodeCell maze={maze} />
+        <NodeCell maze={"true"} />
       ) : obstacle ? (
         <NodeCell obstacle={obstacle}>
           <IconContainer>
@@ -42,7 +42,7 @@ const Node = ({ visited, path, start, end, obstacle, hovering, maze }) => {
           </IconContainer>
         </NodeCell>
       ) : (
-        <NodeCell visited={visited} hovering={hovering} maze={maze} />
+        <NodeCell visited={visited} hovering={hovering} />
       )}
     </>
   );

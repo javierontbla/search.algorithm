@@ -37,6 +37,24 @@ const NodeAnimation = keyframes`
 }
 `;
 
+const MazeAnimation = keyframes`
+  0% {
+  transform: scale(0.6, 0.6);
+  opacity: 0.9;
+}
+
+50% {
+  transform: scale(0.8, 0.8);
+  opacity: 0.95;
+}
+
+
+100% {
+  transform: scale(1, 1);
+  opacity: 1;
+}
+`;
+
 const HoverNodeAnimation = keyframes`
   from {
     transform: scale(1.1, 1.1);
@@ -73,6 +91,10 @@ export const NodeCell = styled.div`
       : props.visited
       ? css`
           ${NodeAnimation} 0.8s ease
+        `
+      : props.maze
+      ? css`
+          ${MazeAnimation} 0.4s ease
         `
       : "none"};
   &:hover {

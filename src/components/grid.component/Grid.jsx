@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Node from "../node.component/Node";
 import NavBar from "../navbar.component/NavBar";
 import { Container, Rows, Columns, NodeContainer } from "./Grid.styles";
-import { aStarAlgorithm } from "../../algorithms/a.star.algorithm";
-import { dijkstraAlgorithm } from "../../algorithms/dijkstra.algorithm";
-import { bfsAlgorithm } from "../../algorithms/bfs.algorithm";
+import { aStarAlgorithm } from "../../pathfinding.algorithms/a.star.algorithm";
+import { dijkstraAlgorithm } from "../../pathfinding.algorithms/dijkstra.algorithm";
+import { bfsAlgorithm } from "../../pathfinding.algorithms/bfs.algorithm";
 import { recursiveDivision } from "../../mazes.algorithms/recursive.division.algorithm";
 
 const Grid = () => {
@@ -132,6 +132,11 @@ const Grid = () => {
   // maze creation animation
   const mazeAnimation = (maze) => {
     for (let i = 0; i < maze.length; i++) {
+      if (
+        grid[maze[i].i][maze[i].j].startNode ||
+        grid[maze[i].i][maze[i].j].endNode
+      )
+        continue;
       // timeout to delay the loop for the animation
       setTimeout(() => {
         let mazeNode = grid[maze[i].i][maze[i].j];
@@ -143,7 +148,6 @@ const Grid = () => {
         gridCopy[maze[i].i][maze[i].j] = mazeNode;
         // this will make the component render again, to display the nodes changing
         setGrid(gridCopy);
-        if (i === maze.length - 1) console.log("done");
       }, 100 * i);
     }
   };
@@ -323,9 +327,7 @@ const Grid = () => {
   const executeRecursiveDivision = () => {
     createNeighbors(true);
     const maze = recursiveDivision(grid, columns, rows);
-    const copy = maze.slice();
-    setGrid(copy);
-    //mazeAnimation(maze);
+    mazeAnimation(maze);
   };
 
   const restartingDOM = () => {
@@ -366,12 +368,12 @@ const Grid = () => {
                     <Node
                       key={rIndx}
                       obstacle={r.obstacle}
+                      maze={grid[cIndx][rIndx].maze}
                       visited={grid[cIndx][rIndx].visited}
                       path={grid[cIndx][rIndx].path}
                       start={grid[cIndx][rIndx].startNode}
                       end={grid[cIndx][rIndx].endNode}
                       hovering={grid[cIndx][rIndx].hovering}
-                      maze={grid[cIndx][rIndx].maze}
                     />
                   </NodeContainer>
                 ))}

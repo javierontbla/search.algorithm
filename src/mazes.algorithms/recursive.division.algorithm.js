@@ -9,79 +9,69 @@ const addBorderWalls = (grid, cols, rows) => {
   for (let i = 0; i < cols; i++) {
     if (i === 0 || i === cols - 1) {
       for (let j = 0; j < rows; j++) {
-        grid[i][j].maze = true;
-        //mazeWalls.push(grid[i][j]);
+        mazeWalls.push(grid[i][j]);
       }
     } else {
-      grid[i][0].maze = true;
-      grid[i][rows - 1].maze = true;
-      //mazeWalls.push(grid[i][0]);
-      //mazeWalls.push(grid[i][rows - 1]);
+      mazeWalls.push(grid[i][0]);
+      mazeWalls.push(grid[i][rows - 1]);
     }
   }
   return grid;
 };
 
 export const recursiveDivision = (graph, cols, rows) => {
+  mazeWalls = [];
   // generating the border walls of the grid
   // this returns the grid with border walls
   let grid = addBorderWalls(graph, cols, rows);
 
   const addHorizontalWall = (minX, maxX, y) => {
     // randomNumber this way creates only odd numbers
-    const door = Math.floor(randomNumber(minX, maxX) / 2) * 2 + 1;
+    let door = Math.floor(randomNumber(minX, maxX) / 2) * 2 + 1;
 
     for (let i = minX; i <= maxX; i++) {
-      if (!grid[i][y].startNode && !grid[i][y].endNode) {
-        if (i === door) grid[i][y].maze = false;
-        else grid[i][y].maze = true;
-        // else mazeWalls.push(grid[i][y]);
-      }
+      if (i !== door) mazeWalls.push(grid[i][y]);
     }
   };
 
   const addVerticalWall = (minY, maxY, x) => {
     // randomNumber this way creates only odd numbers
-    const door = Math.floor(randomNumber(minY, maxY) / 2) * 2 + 1;
+    let door = Math.floor(randomNumber(minY, maxY) / 2) * 2 + 1;
 
     for (let i = minY; i <= maxY; i++) {
-      if (!grid[x][i].startNode && !grid[x][i].endNode) {
-        if (i === door) grid[x][i].maze = false;
-        else grid[x][i].maze = true;
-        //else mazeWalls.push(grid[x][i]);
-      }
+      if (i !== door) mazeWalls.push(grid[x][i]);
     }
   };
 
-  const addInnerWalls = (first, minX, maxX, minY, maxY) => {
-    if (first) {
+  const addInnerWalls = (change, minX, maxX, minY, maxY) => {
+    if (change) {
       // 27 < 2
       if (maxX - minX < 2) {
         // break recursive function
         return;
       }
-      // randomNumber this way, creates a even number
+      // randomNumber this way, creates an even number
       const y = Math.floor(randomNumber(minY, maxY) / 2) * 2;
       // creates only horizontal walls in the x-axis
       addHorizontalWall(minX, maxX, y);
 
-      addInnerWalls(!first, minX, maxX, minY, y - 1);
-      addInnerWalls(!first, minX, maxX, y + 1, maxY);
+      addInnerWalls(!change, minX, maxX, minY, y - 1);
+      addInnerWalls(!change, minX, maxX, y + 1, maxY);
     } else {
       if (maxY - minY < 2) {
         // break recursive function
         return;
       }
-      // randomNumber this way, creates a even number
-      const x = Math.floor(randomNumber(minY, maxY) / 2) * 2;
+      // randomNumber this way, creates an even number
+      const x = Math.floor(randomNumber(minX, maxX) / 2) * 2;
       addVerticalWall(minY, maxY, x);
 
-      addInnerWalls(!first, minX, x - 1, minY, maxY);
-      addInnerWalls(!first, x + 1, maxX, minY, maxY);
+      addInnerWalls(!change, minX, x - 1, minY, maxY);
+      addInnerWalls(!change, x + 1, maxX, minY, maxY);
     }
   };
 
   // the walls that actually form the maze (inside)
   addInnerWalls(true, 1, cols - 2, 1, rows - 2);
-  return grid;
+  return mazeWalls;
 };
