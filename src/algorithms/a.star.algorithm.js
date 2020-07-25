@@ -58,7 +58,11 @@ export const aStarAlgorithm = (start, end) => {
         let neighbor = neighbors[i];
 
         // if neighbors var isn't in closetSet arr, enter statement
-        if (!closedSet.includes(neighbor) && !neighbor.obstacle) {
+        if (
+          !closedSet.includes(neighbor) &&
+          !neighbor.obstacle &&
+          !neighbor.maze
+        ) {
           let tentativeG = current.g + 1;
 
           let finalPath = false;

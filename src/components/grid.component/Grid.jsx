@@ -27,8 +27,6 @@ const Grid = () => {
   const [endJ, setEndJ] = useState(rows - 8);
 
   useEffect(() => {
-    // grid to store the i & j values of the loops
-    let nodes = [];
     const obstacles = () => {
       if (randomObstacles) {
         if (Math.random(1) < 0.3) return true;
@@ -36,6 +34,8 @@ const Grid = () => {
       return false;
     };
 
+    // grid to store the i & j values of the loops
+    let nodes = [];
     // columns
     for (let i = 0; i < columns; i++) {
       let column = [];
