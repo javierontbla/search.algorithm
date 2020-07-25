@@ -46,7 +46,6 @@ export const Nav = styled(Navbar)`
 
 export const Logo = styled(Navbar.Brand)`
   color: ${white} !important;
-  font-weight: bold !important;
   font-size: 1.4rem;
   font-family: "Ubuntu", sans-serif;
   letter-spacing: 1px;
@@ -156,7 +155,6 @@ export const Menu = styled.div`
   font-size: 1rem;
   position: relative;
   font-family: "Ubuntu", sans-serif;
-  font-weight: bold;
   height: 60px;
   letter-spacing: 1px;
   transition: color, 0.6s;

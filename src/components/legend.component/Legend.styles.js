@@ -10,7 +10,7 @@ export const Container = styled.div`
   flex-direction: row;
   margin-top: 40px;
   justify-content: space-around;
-  width: 70%;
+  width: 60%;
 `;
 
 export const Icon = styled(FontAwesomeIcon)`
@@ -23,7 +23,6 @@ export const Icon = styled(FontAwesomeIcon)`
 export const Description = styled.div`
   text-transform: uppercase;
   color: ${black};
-  font-weight: bold;
   font-size: 1rem;
   font-family: "Ubuntu", sans-serif;
 `;
