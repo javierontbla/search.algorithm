@@ -17,7 +17,7 @@ export const dijkstraAlgorithm = (grid, start, end) => {
     let minValue = minQ.shift();
 
     // if node is an obstacle continue to next iteration
-    if (minValue.obstacle) continue;
+    if (minValue.obstacle || minValue.maze) continue;
 
     if (minValue === end) {
       path.push(minValue);

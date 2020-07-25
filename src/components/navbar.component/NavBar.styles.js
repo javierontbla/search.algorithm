@@ -41,15 +41,15 @@ export const Nav = styled(Navbar)`
   display: flex;
   background-color: ${blue} !important;
   width: 100%;
-  height: 70px;
+  height: 6vh;
 `;
 
 export const Logo = styled(Navbar.Brand)`
   color: ${white} !important;
   font-weight: bold !important;
-  font-size: 1.7rem;
-  font-family: Verdana, Geneva, sans-serif;
-  letter-spacing: 0.5px;
+  font-size: 1.4rem;
+  font-family: "Ubuntu", sans-serif;
+  letter-spacing: 1px;
 `;
 
 export const PlayButton = styled(FontAwesomeIcon)`
@@ -59,7 +59,7 @@ export const PlayButton = styled(FontAwesomeIcon)`
           ${IconAnimation} 0.6s linear
         `
       : "none"};
-  font-size: ${(props) => (props.restart ? "45px" : "52px")};
+  font-size: ${(props) => (props.restart ? "32px" : "40px")};
   margin-left: 8px;
   color: ${white};
 
@@ -78,7 +78,7 @@ export const AlgorithmsContainer = styled.div`
 export const PlayButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 10%;
 `;
 
@@ -102,7 +102,7 @@ export const SocialContainer = styled.div`
 `;
 
 export const Obstacles = styled(FontAwesomeIcon)`
-  font-size: 28px;
+  font-size: 23px;
   color: ${white};
 
   &:hover {
@@ -112,19 +112,8 @@ export const Obstacles = styled(FontAwesomeIcon)`
 `;
 
 export const Info = styled(FontAwesomeIcon)`
-  font-size: 31px;
+  font-size: 26px;
   color: ${white};
-  &:hover {
-    cursor: pointer;
-    opacity: 0.9;
-  }
-`;
-
-export const Icon = styled(FontAwesomeIcon)`
-  font-size: ${(props) => (props.github ? "38px" : "16px")};
-  color: ${white};
-  margin-left: 6px;
-
   &:hover {
     cursor: pointer;
     opacity: 0.9;
@@ -143,14 +132,20 @@ export const LogoIcon = styled.div`
 export const Content = styled.div`
   display: none;
   position: absolute;
-  height: 120px;
-  width: 200px;
+  height: 12vh;
+  width: 11vw;
   top: 45px;
   animation: ${DropDownAnimation} 0.2s ease-out;
   z-index: 1;
   overflow: hidden;
   border-collapse: separate;
-  border-radius: 5px;
+`;
+
+export const Icon = styled(FontAwesomeIcon)`
+  font-size: ${(props) => (props.github ? "30px" : "14px")};
+  color: ${white};
+  margin-left: 6px;
+  transition: color, 0.6s;
 `;
 
 export const Menu = styled.div`
@@ -158,21 +153,24 @@ export const Menu = styled.div`
   align-items: center;
   justify-content: center;
   color: ${white};
-  font-size: 1.2rem;
+  font-size: 1rem;
   position: relative;
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-weight: bold;
   height: 60px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  transition: color, 0.6s;
 
   &:hover {
     cursor: pointer;
+    color: ${green};
   }
   &:hover ${Content} {
     display: flex;
     flex-direction: column;
   }
   &:hover ${Icon} {
+    color: ${green};
     opacity: 0.9;
   }
 `;
@@ -180,17 +178,17 @@ export const Menu = styled.div`
 export const Button = styled.button`
   display: block;
   color: ${white};
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   padding: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
   width: 100%;
   background-color: ${blue};
   border: none;
-  height: 40px;
+  height: 4vh;
   text-transform: uppercase;
   font-weight: bold;
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: "Ubuntu", sans-serif;
   letter-spacing: 1px;
   transition: background-color, 0.6s;
   border-bottom: 4px solid transparent;

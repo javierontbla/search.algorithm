@@ -14,7 +14,7 @@ export const Container = styled.div`
 `;
 
 export const Icon = styled(FontAwesomeIcon)`
-  font-size: 30px;
+  font-size: 20px;
   color: ${(props) =>
     props.start ? `${black}` : props.obstacle ? `${blue}` : `${red}`};
   margin: 8px;
@@ -24,8 +24,8 @@ export const Description = styled.div`
   text-transform: uppercase;
   color: ${black};
   font-weight: bold;
-  font-size: 1.2rem;
-  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1rem;
+  font-family: "Ubuntu", sans-serif;
 `;
 
 export const LegendContainer = styled.div`
@@ -35,10 +35,11 @@ export const LegendContainer = styled.div`
 `;
 
 export const Node = styled.div`
-  height: 30px;
-  width: 30px;
+  height: 0;
+  padding-bottom: 1.2vw;
+  width: 1.2vw;
   background-color: ${(props) =>
     props.visited ? `${yellow}` : props.maze ? `${blue}` : `${green}`};
-  border: 1.5px solid ${white};
+  border: 0.5px solid ${white};
   margin: 8px;
 `;

@@ -10,6 +10,7 @@ import {
   NodeStart,
   NodeEnd,
   NodePath,
+  IconContainer,
   Car,
   Obstacle,
   Pin,
@@ -20,11 +21,15 @@ const Node = ({ visited, path, start, end, obstacle, hovering, maze }) => {
     <>
       {start ? (
         <NodeStart>
-          <Car icon={faCarSide} />
+          <IconContainer>
+            <Car icon={faCarSide} />
+          </IconContainer>
         </NodeStart>
       ) : end ? (
         <NodeEnd>
-          <Pin icon={faMapPin} />
+          <IconContainer>
+            <Pin icon={faMapPin} />
+          </IconContainer>
         </NodeEnd>
       ) : path ? (
         <NodePath />
@@ -32,7 +37,9 @@ const Node = ({ visited, path, start, end, obstacle, hovering, maze }) => {
         <NodeCell maze={maze} />
       ) : obstacle ? (
         <NodeCell obstacle={obstacle}>
-          <Obstacle icon={faBuilding} />
+          <IconContainer>
+            <Obstacle icon={faBuilding} />
+          </IconContainer>
         </NodeCell>
       ) : (
         <NodeCell visited={visited} hovering={hovering} maze={maze} />

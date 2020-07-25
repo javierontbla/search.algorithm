@@ -23,7 +23,7 @@ export const bfsAlgorithm = (start, end) => {
 
     let neighbors = current.neighbors;
     neighbors.forEach((neighbor) => {
-      if (!neighbor.visitedBfs && !neighbor.obstacle) {
+      if (!neighbor.visitedBfs && !neighbor.obstacle && !neighbor.maze) {
         visited.push(neighbor);
         neighbor.visitedBfs = true;
         neighbor.parent = current;

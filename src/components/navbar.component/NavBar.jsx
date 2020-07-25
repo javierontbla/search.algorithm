@@ -112,7 +112,7 @@ const NavBar = ({
               <Icon icon={faCaretDown} />
             </span>
             <Content>
-              <Button onClick={executePrims}>maze1</Button>
+              <Button onClick={executePrims}>Recursive Division</Button>
               <Button>maze2</Button>
               <Button>maze3</Button>
             </Content>

@@ -19,7 +19,7 @@ const Grid = () => {
   const [generatingObstacles, setGeneratingObstacles] = useState(false);
   const [movingStartNode, setMovingStartNode] = useState(false);
   const [movingEndNode, setMovingEndNode] = useState(false);
-  const [columns, setColumns] = useState(30);
+  const [columns, setColumns] = useState(31);
   const [rows, setRows] = useState(15);
   const [startI, setStartI] = useState(5);
   const [startJ, setStartJ] = useState(7);
@@ -138,12 +138,13 @@ const Grid = () => {
         let gridCopy = grid.slice();
         mazeNode = {
           ...mazeNode,
-          obstacle: true,
+          maze: true,
         };
         gridCopy[maze[i].i][maze[i].j] = mazeNode;
         // this will make the component render again, to display the nodes changing
         setGrid(gridCopy);
-      }, 120 * i);
+        if (i === maze.length - 1) console.log("done");
+      }, 100 * i);
     }
   };
 
@@ -319,11 +320,12 @@ const Grid = () => {
     searchingAnimation(result[0], result[1]);
   };
 
-  const executePrims = () => {
+  const executeRecursiveDivision = () => {
     createNeighbors(true);
-    const result = recursiveDivision(grid, columns, rows);
-    const copy = result.slice();
+    const maze = recursiveDivision(grid, columns, rows);
+    const copy = maze.slice();
     setGrid(copy);
+    //mazeAnimation(maze);
   };
 
   const restartingDOM = () => {
@@ -344,7 +346,7 @@ const Grid = () => {
           executeAStar={() => executeAStar()}
           executeDijkstra={() => executeDijkstra()}
           executeBfs={() => executeBfs()}
-          executePrims={() => executePrims()}
+          executePrims={() => executeRecursiveDivision()}
           randomObstacles={() => createRandomObstacles()}
           restartingDOM={() => restartingDOM()}
           restartBtn={restartBtn}
