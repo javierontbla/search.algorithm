@@ -1,5 +1,7 @@
 // Recursive Division Algorithm
+// walls to store the maze
 let mazeWalls = [];
+let allDoors = [];
 
 const randomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -27,24 +29,28 @@ export const recursiveDivision = (graph, cols, rows) => {
 
   const addHorizontalWall = (minX, maxX, y) => {
     // randomNumber this way creates only odd numbers
-    let door = Math.floor(randomNumber(minX, maxX) / 2) * 2 + 1;
+    const door = Math.floor(randomNumber(minX, maxX) / 2) * 2 + 1;
 
     for (let i = minX; i <= maxX; i++) {
-      if (i !== door) mazeWalls.push(grid[i][y]);
+      if (i !== door && !allDoors.includes(grid[i][y])) {
+        mazeWalls.push(grid[i][y]);
+      } else if (i === door) allDoors.push(grid[i][y]);
     }
   };
 
   const addVerticalWall = (minY, maxY, x) => {
     // randomNumber this way creates only odd numbers
-    let door = Math.floor(randomNumber(minY, maxY) / 2) * 2 + 1;
+    const door = Math.floor(randomNumber(minY, maxY) / 2) * 2 + 1;
 
     for (let i = minY; i <= maxY; i++) {
-      if (i !== door) mazeWalls.push(grid[x][i]);
+      if (i !== door && !allDoors.includes(grid[x][i])) {
+        mazeWalls.push(grid[x][i]);
+      } else if (i === door) allDoors.push(grid[x][i]);
     }
   };
 
-  const addInnerWalls = (change, minX, maxX, minY, maxY) => {
-    if (change) {
+  const addInnerWalls = (orientation, minX, maxX, minY, maxY) => {
+    if (orientation) {
       // 27 < 2
       if (maxX - minX < 2) {
         // break recursive function
@@ -55,8 +61,8 @@ export const recursiveDivision = (graph, cols, rows) => {
       // creates only horizontal walls in the x-axis
       addHorizontalWall(minX, maxX, y);
 
-      addInnerWalls(!change, minX, maxX, minY, y - 1);
-      addInnerWalls(!change, minX, maxX, y + 1, maxY);
+      addInnerWalls(!orientation, minX, maxX, minY, y - 1);
+      addInnerWalls(!orientation, minX, maxX, y + 1, maxY);
     } else {
       if (maxY - minY < 2) {
         // break recursive function
@@ -64,10 +70,11 @@ export const recursiveDivision = (graph, cols, rows) => {
       }
       // randomNumber this way, creates an even number
       const x = Math.floor(randomNumber(minX, maxX) / 2) * 2;
+      // creates only vertical walls in the y-axis
       addVerticalWall(minY, maxY, x);
 
-      addInnerWalls(!change, minX, x - 1, minY, maxY);
-      addInnerWalls(!change, x + 1, maxX, minY, maxY);
+      addInnerWalls(!orientation, minX, x - 1, minY, maxY);
+      addInnerWalls(!orientation, x + 1, maxX, minY, maxY);
     }
   };
 
