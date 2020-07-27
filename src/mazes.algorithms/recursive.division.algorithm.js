@@ -1,7 +1,7 @@
 // Recursive Division Algorithm
 // walls to store the maze
 let mazeWalls = [];
-let allDoors = [];
+let allDoors = {};
 
 const randomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -23,6 +23,7 @@ const addBorderWalls = (grid, cols, rows) => {
 
 export const recursiveDivision = (graph, cols, rows) => {
   mazeWalls = [];
+  allDoors = {};
   // generating the border walls of the grid
   // this returns the grid with border walls
   let grid = addBorderWalls(graph, cols, rows);
@@ -32,9 +33,9 @@ export const recursiveDivision = (graph, cols, rows) => {
     const door = Math.floor(randomNumber(minX, maxX) / 2) * 2 + 1;
 
     for (let i = minX; i <= maxX; i++) {
-      if (i !== door && !allDoors.includes(grid[i][y])) {
+      if (i !== door && !allDoors[`${grid[i][y].i}${grid[i][y].j}`]) {
         mazeWalls.push(grid[i][y]);
-      } else if (i === door) allDoors.push(grid[i][y]);
+      } else if (i === door) allDoors[`${grid[i][y].i}${grid[i][y].j}`] = true;
     }
   };
 
@@ -43,9 +44,9 @@ export const recursiveDivision = (graph, cols, rows) => {
     const door = Math.floor(randomNumber(minY, maxY) / 2) * 2 + 1;
 
     for (let i = minY; i <= maxY; i++) {
-      if (i !== door && !allDoors.includes(grid[x][i])) {
+      if (i !== door && !allDoors[`${grid[x][i].i}${grid[x][i].j}`]) {
         mazeWalls.push(grid[x][i]);
-      } else if (i === door) allDoors.push(grid[x][i]);
+      } else if (i === door) allDoors[`${grid[x][i].i}${grid[x][i].j}`] = true;
     }
   };
 
