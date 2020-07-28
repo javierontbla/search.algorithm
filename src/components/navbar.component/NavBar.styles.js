@@ -6,6 +6,8 @@ import { colors } from "../../colors/colors";
 
 const { white, blue, green } = colors;
 
+let hoverScale = 0;
+
 const IconAnimation = keyframes`
   from {
     display: none;
@@ -100,6 +102,35 @@ export const SocialContainer = styled.div`
   width: 22.5%;
 `;
 
+export const Tooltip = styled.div`
+  position: relative;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 0.90rem;
+  text-transform: uppercase;
+
+  &:after {
+    position: absolute;
+    top: ${(props) => (props.playBtn ? "1rem" : "0.50rem")};
+    height: max-content;
+    width: max-content;
+    background: ${blue};
+    opacity: 0.96;
+    left: 50%;
+    color: ${white};
+    padding: .5rem;
+    content: '${(props) => props.data}';
+    transform: translateX(-50%) translateY(100%) scale(0);
+    z-index: 2;
+    border-radius: .2rem;
+    transition: 180ms transform;
+    transform-origin: top center;
+  }
+
+  &:hover:after {
+    transform: translateX(-50%) translateY(100%) scale(1);
+  }
+`;
+
 export const Obstacles = styled(FontAwesomeIcon)`
   font-size: 23px;
   color: ${white};
@@ -135,9 +166,10 @@ export const Content = styled.div`
   width: 11vw;
   top: 45px;
   animation: ${DropDownAnimation} 0.2s ease-out;
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
   border-collapse: separate;
+  border-radius: 0.2rem;
 `;
 
 export const Icon = styled(FontAwesomeIcon)`
@@ -152,7 +184,7 @@ export const Menu = styled.div`
   align-items: center;
   justify-content: center;
   color: ${white};
-  font-size: 1rem;
+  font-size: 1.1rem;
   position: relative;
   font-family: "Ubuntu", sans-serif;
   height: 60px;
@@ -176,7 +208,7 @@ export const Menu = styled.div`
 export const Button = styled.button`
   display: block;
   color: ${white};
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   padding: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -185,7 +217,6 @@ export const Button = styled.button`
   border: none;
   height: 4vh;
   text-transform: uppercase;
-  font-weight: bold;
   font-family: "Ubuntu", sans-serif;
   letter-spacing: 1px;
   transition: background-color, 0.6s;

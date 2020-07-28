@@ -19,6 +19,7 @@ import {
   Button,
   Icon,
   LogoIcon,
+  Tooltip,
   PlayButtonContainer,
   AlgorithmsContainer,
   LogoContainer,
@@ -90,7 +91,9 @@ const NavBar = ({
           </Menu>
         </AlgorithmsContainer>
         <PlayButtonContainer>
-          <Info icon={faInfoCircle} />
+          <Tooltip data="tutorial">
+            <Info icon={faInfoCircle} />
+          </Tooltip>
           {restartBtn ? (
             <PlayButton
               icon={faRedoAlt}
@@ -98,12 +101,16 @@ const NavBar = ({
               restart={"true"}
             />
           ) : (
-            <PlayButton
-              icon={faPlayCircle}
-              onClick={() => executeAlgorithm()}
-            />
+            <Tooltip data="Visualize" playBtn={"true"}>
+              <PlayButton
+                icon={faPlayCircle}
+                onClick={() => executeAlgorithm()}
+              />
+            </Tooltip>
           )}
-          <Obstacles onClick={randomObstacles} icon={faBuilding} />
+          <Tooltip data="random obstacles">
+            <Obstacles onClick={randomObstacles} icon={faBuilding} />
+          </Tooltip>
         </PlayButtonContainer>
         <MazesContainer>
           <Menu>
@@ -119,12 +126,14 @@ const NavBar = ({
           </Menu>
         </MazesContainer>
         <SocialContainer>
-          <a
-            href={"https://github.com/javierontbla/search.algorithm"}
-            target="_blank"
-          >
-            <Icon icon={faGithub} github={"true"} />
-          </a>
+          <Tooltip data="Github repository">
+            <a
+              href={"https://github.com/javierontbla/search.algorithm"}
+              target="_blank"
+            >
+              <Icon icon={faGithub} github={"true"} />
+            </a>
+          </Tooltip>
         </SocialContainer>
       </Nav>
     </>
