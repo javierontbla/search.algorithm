@@ -1,5 +1,7 @@
 // Dijkstra Algorithm
-export const dijkstraAlgorithm = (grid, start, end) => {
+import { nodeNeighbors } from "./a.star.algorithm";
+
+export const dijkstraAlgorithm = (end, cols, rows, grid) => {
   let minQ = [];
   let visited = [];
   let path = [];
@@ -30,6 +32,13 @@ export const dijkstraAlgorithm = (grid, start, end) => {
     }
 
     visited.push(minValue);
+    minValue.neighbors = nodeNeighbors(
+      minValue.i,
+      minValue.j,
+      cols,
+      rows,
+      grid
+    );
     for (let i = 0; i < minValue.neighbors.length; i++) {
       let neighbor = minValue.neighbors[i];
       let tempDistance = minValue.distance + 1;
@@ -40,6 +49,6 @@ export const dijkstraAlgorithm = (grid, start, end) => {
       }
     }
   }
-  minQ.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
+
   return [visited, path];
 };

@@ -7,9 +7,29 @@ const calculateHeuristic = (currentNode, endNode) => {
   );
 };
 
+// neighbors generation for each node
+export const nodeNeighbors = (i, j, columns, rows, grid, maze) => {
+  let neighbors = [];
+  // adding the neighboors to each individual node
+  // and those get stored in the object node
+  // managing edges with if statements
+  if (i < columns - 1) neighbors.push(grid[i + 1][j]);
+  if (j < rows - 1) neighbors.push(grid[i][j + 1]);
+  if (i > 0) neighbors.push(grid[i - 1][j]);
+  if (j > 0) neighbors.push(grid[i][j - 1]);
+  if (!maze) {
+    if (i < columns - 1 && j < rows - 1) neighbors.push(grid[i + 1][j + 1]);
+    if (i > 0 && j < rows - 1) neighbors.push(grid[i - 1][j + 1]);
+    if (i > 0 && j > 0) neighbors.push(grid[i - 1][j - 1]);
+    if (i < columns - 1 && j > 0) neighbors.push(grid[i + 1][j - 1]);
+  }
+
+  return neighbors;
+};
+
 // function gets called with start and end node only
 // because, the nodes are objs that have their neighbors stored
-export const aStarAlgorithm = (start, end) => {
+export const aStarAlgorithm = (start, end, cols, rows, grid) => {
   // nodes being evaluated
   let openSet = [];
   // nodes done evaluating
@@ -42,20 +62,23 @@ export const aStarAlgorithm = (start, end) => {
           // going backwards
           current = current.parent;
         }
+        // use break, no return
         break;
       }
 
       // remove current from openSet
-      openSet.splice(openSet.indexOf(current), 1);
+      // O(n)
+      openSet = openSet.filter((node) => node !== current);
       // add current to closedSet
       closedSet.push(current);
 
+      // only create neighbors for nodes that are being evaluated
+      current.neighbors = nodeNeighbors(current.i, current.j, cols, rows, grid);
+
       // get the neighbors of current
-      // (current is still the same node here)
-      let neighbors = current.neighbors;
-      for (let i = 0; i < neighbors.length; i++) {
+      for (let i = 0; i < current.neighbors.length; i++) {
         // store individual neighbor
-        let neighbor = neighbors[i];
+        let neighbor = current.neighbors[i];
 
         // if neighbors var isn't in closetSet arr, enter statement
         if (
@@ -88,38 +111,8 @@ export const aStarAlgorithm = (start, end) => {
         }
       }
     } else {
-      return "no viable solution";
+      return false;
     }
   }
   return [closedSet, path];
-};
-
-const generateNeighbors = (grid, columns, rows, startI, startJ, endI, endJ) => {
-  const nodeNeighbors = (i, j) => {
-    let neighborsArr = [];
-    // adding the neighboors to each individual node
-    // and those get stored in the object node
-    // managing edges with if statements
-    if (i < columns - 1) neighborsArr.push(grid[i + 1][j]);
-    if (i > 0) neighborsArr.push(grid[i - 1][j]);
-    if (j < rows - 1) neighborsArr.push(grid[i][j + 1]);
-    if (j > 0) neighborsArr.push(grid[i][j - 1]);
-    if (i > 0 && j > 0) neighborsArr.push(grid[i - 1][j - 1]);
-    if (i < columns - 1 && j < rows - 1) neighborsArr.push(grid[i + 1][j + 1]);
-    if (i > 0 && j < rows - 1) neighborsArr.push(grid[i - 1][j + 1]);
-    if (i < columns - 1 && j > 0) neighborsArr.push(grid[i + 1][j - 1]);
-
-    return neighborsArr;
-  };
-
-  // adding the neighbors to each node, once the grid is already built
-  for (let i = 0; i < columns; i++) {
-    for (let j = 0; j < rows; j++) {
-      // adding neighbors
-      grid[i][j].neighbors = nodeNeighbors(i, j);
-    }
-  }
-  grid[startI][startJ].obstacle = false;
-  grid[endI][endJ].obstacle = false;
-  return aStarAlgorithm(grid[startI][startJ], grid[endI][endJ]);
 };

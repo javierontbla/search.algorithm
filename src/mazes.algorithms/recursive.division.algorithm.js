@@ -1,5 +1,4 @@
 // Recursive Division Algorithm
-// walls to store the maze
 let mazeWalls = [];
 let allDoors = {};
 
@@ -22,8 +21,6 @@ const addBorderWalls = (grid, cols, rows) => {
 };
 
 export const recursiveDivision = (graph, cols, rows) => {
-  mazeWalls = [];
-  allDoors = {};
   // generating the border walls of the grid
   // this returns the grid with border walls
   let grid = addBorderWalls(graph, cols, rows);

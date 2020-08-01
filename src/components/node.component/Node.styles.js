@@ -12,22 +12,10 @@ const NodeAnimation = keyframes`
   border-radius: 20px;
 }
 
-25% {
-  transform: scale(0.7, 0.7);
-  opacity: 0.7;
-  border-radius: 15px;
-}
-
 50% {
   transform: scale(0.8, 0.8);
   opacity: 0.8;
   border-radius: 10px;
-}
-
-75% {
-  transform: scale(0.9, 0.9);
-  opacity: 0.9;
-  border-radius: 5px;
 }
 
 100% {
@@ -41,27 +29,21 @@ const MazeAnimation = keyframes`
   0% {
   transform: scale(0.6, 0.6);
   opacity: 0.9;
-}
+  }
 
-50% {
-  transform: scale(0.8, 0.8);
-  opacity: 0.95;
-}
-
-
-100% {
-  transform: scale(1, 1);
-  opacity: 1;
-}
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
 `;
 
 const HoverNodeAnimation = keyframes`
   from {
-    transform: scale(1.1, 1.1);
+    background: ${blue};
   }
 
   to {
-    transform: scale(1,1);
+    background: ${white};
   }
 `;
 
@@ -86,15 +68,15 @@ export const NodeCell = styled.div`
   animation: ${(props) =>
     props.hovering
       ? css`
-          ${HoverNodeAnimation} 0.4s ease
+          ${HoverNodeAnimation} 0.4s linear
         `
       : props.visited
       ? css`
-          ${NodeAnimation} 0.8s ease
+          ${NodeAnimation} 0.5s linear
         `
       : props.maze
       ? css`
-          ${MazeAnimation} 0.4s ease
+          ${MazeAnimation} 0.4s linear
         `
       : "none"};
   &:hover {
@@ -110,7 +92,7 @@ export const NodePath = styled.div`
   background-color: ${green};
   opacity: 0.9;
   border: 0.5px solid ${blue};
-  animation: ${NodeAnimation} 0.8s ease;
+  animation: ${NodeAnimation} 0.5s linear;
   &:hover {
     cursor: pointer;
   }
@@ -145,7 +127,7 @@ export const NodeEnd = styled.div`
 `;
 
 export const IconContainer = styled.div`
-  animation: ${NodeAnimation} 0.8s ease;
+  animation: ${NodeAnimation} 0.4s linear;
   margin-bottom: -1.8vw;
   z-index: 1;
 `;

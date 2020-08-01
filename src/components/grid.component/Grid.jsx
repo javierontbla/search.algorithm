@@ -50,7 +50,6 @@ const Grid = () => {
             h: 0,
             j,
             i,
-            neighbors: null,
             parent: null,
             visited: false,
             visitedBfs: false,
@@ -69,7 +68,6 @@ const Grid = () => {
             h: 0,
             j,
             i,
-            neighbors: null,
             parent: null,
             visited: false,
             visitedBfs: false,
@@ -88,7 +86,6 @@ const Grid = () => {
             h: 0,
             j,
             i,
-            neighbors: null,
             parent: null,
             visited: false,
             visitedBfs: false,
@@ -107,48 +104,28 @@ const Grid = () => {
     setGrid(nodes);
   }, [randomObstacles, restartDOM]);
 
-  // GRID ANIMATIONS
-  // run the animation with the closedSet arr from the algorithm function
-  const searchingAnimation = (visitedNodes, path) => {
-    // animation runs after algorithm is done
-    for (let i = 0; i < visitedNodes.length; i++) {
-      // timeout to delay the loop for the animation
-      setTimeout(() => {
-        let visitedNode = grid[visitedNodes[i].i][visitedNodes[i].j];
-        let gridCopy = grid.slice();
-        visitedNode = {
-          ...visitedNode,
-          visited: true,
-        };
-        gridCopy[visitedNodes[i].i][visitedNodes[i].j] = visitedNode;
-        // this will make the component render again, to display the nodes changing
-        setGrid(gridCopy);
-        // once the loop reaches it's final element, run rhe path animation
-        if (i === visitedNodes.length - 1) pathAnimation(path);
-      }, 120 * i);
-    }
+  // CREATE RANDOM OBSTACLES ON GRID
+  const createRandomObstacles = () => {
+    setRandomObstacles((p) => !p);
   };
 
-  // maze creation animation
-  const mazeAnimation = (maze) => {
-    for (let i = 0; i < maze.length; i++) {
+  // GRID ANIMATIONS
+  const searchingAnimation = (visitedNodes, path, action) => {
+    for (let i = 0; i < visitedNodes.length; i++) {
       if (
-        grid[maze[i].i][maze[i].j].startNode ||
-        grid[maze[i].i][maze[i].j].endNode
+        grid[visitedNodes[i].i][visitedNodes[i].j].startNode ||
+        grid[visitedNodes[i].i][visitedNodes[i].j].endNode
       )
         continue;
-      // timeout to delay the loop for the animation
       setTimeout(() => {
-        let mazeNode = grid[maze[i].i][maze[i].j];
-        let gridCopy = grid.slice();
-        mazeNode = {
-          ...mazeNode,
-          maze: true,
-        };
-        gridCopy[maze[i].i][maze[i].j] = mazeNode;
-        // this will make the component render again, to display the nodes changing
-        setGrid(gridCopy);
-      }, 100 * i);
+        let node = grid[visitedNodes[i].i][visitedNodes[i].j];
+        let copy = grid.slice();
+        node[action] = true;
+        copy[visitedNodes[i].i][visitedNodes[i].j] = node;
+        setGrid(copy);
+
+        if (i === visitedNodes.length - 1 && path) pathAnimation(path);
+      }, i * 140);
     }
   };
 
@@ -167,67 +144,21 @@ const Grid = () => {
         gridCopy[path[j].i][path[j].j] = nodePath;
         setGrid(gridCopy);
         if (j === path.length - 1) setRestartBtn(true);
-      }, 120 * j);
+      }, 140 * j);
     }
   };
 
-  // hover animation, when moving start or end node
-  const hoverAnimation = (i, j) => {
+  // create an individual obstacle or start || end node hover animation
+  // (animation also)
+  const obstacleAnimation = (i, j, action) => {
     let node = grid[i][j];
-    let copyGrid = grid.slice();
-    node = {
-      ...node,
-      hovering: true,
-    };
-    copyGrid[i][j] = node;
-    setGrid(copyGrid);
+    let copy = grid.slice();
+    node[action] = true;
+    copy[i][j] = node;
+    setGrid(copy);
   };
 
-  // function that created individual function
-  const createObstacle = (i, j) => {
-    let obstacleNode = grid[i][j];
-    let gridCopy = grid.slice();
-    obstacleNode = {
-      ...obstacleNode,
-      obstacle: true,
-    };
-    gridCopy[i][j] = obstacleNode;
-    setGrid(gridCopy);
-  };
-
-  const createRandomObstacles = () => {
-    setRandomObstacles((p) => !p);
-  };
-
-  const createNeighbors = (maze) => {
-    const nodeNeighbors = (i, j) => {
-      let neighbors = [];
-      // adding the neighboors to each individual node
-      // and those get stored in the object node
-      // managing edges with if statements
-      if (i < columns - 1) neighbors.push(grid[i + 1][j]);
-      if (j < rows - 1) neighbors.push(grid[i][j + 1]);
-      if (i > 0) neighbors.push(grid[i - 1][j]);
-      if (j > 0) neighbors.push(grid[i][j - 1]);
-      if (!maze) {
-        if (i < columns - 1 && j < rows - 1) neighbors.push(grid[i + 1][j + 1]);
-        if (i > 0 && j < rows - 1) neighbors.push(grid[i - 1][j + 1]);
-        if (i > 0 && j > 0) neighbors.push(grid[i - 1][j - 1]);
-        if (i < columns - 1 && j > 0) neighbors.push(grid[i + 1][j - 1]);
-      }
-
-      return neighbors;
-    };
-    // adding the neighbors to the node, once the grid is already built
-    for (let i = 0; i < columns; i++) {
-      for (let j = 0; j < rows; j++) {
-        // adding neighbors to individual node
-        grid[i][j].neighbors = nodeNeighbors(i, j);
-      }
-    }
-  };
-
-  const moveNode = (i, j, action) => {
+  const moveIcon = (i, j, action) => {
     let node = grid[i][j];
     let gridCopy = grid.slice();
     if (action === 1) {
@@ -263,10 +194,10 @@ const Grid = () => {
 
   const handleMouseDown = (i, j) => {
     if (grid[i][j].startNode) {
-      moveNode(i, j, 3);
+      moveIcon(i, j, 3);
       setMovingStartNode(true);
     } else if (grid[i][j].endNode) {
-      moveNode(i, j, 4);
+      moveIcon(i, j, 4);
       setMovingEndNode(true);
     } else {
       setGeneratingObstacles(true);
@@ -274,18 +205,18 @@ const Grid = () => {
   };
 
   const handleMouseMove = (i, j) => {
-    if (movingStartNode || movingEndNode) hoverAnimation(i, j);
-    if (generatingObstacles) createObstacle(i, j);
+    if (movingStartNode || movingEndNode) obstacleAnimation(i, j, "hovering");
+    if (generatingObstacles) obstacleAnimation(i, j, "obstacle");
   };
 
   const handleMouseUp = (i, j) => {
     if (movingStartNode) {
-      moveNode(i, j, 1);
+      moveIcon(i, j, 1);
       setMovingStartNode(false);
       setStartI(i);
       setStartJ(j);
     } else if (movingEndNode) {
-      moveNode(i, j, 2);
+      moveIcon(i, j, 2);
       setMovingEndNode(false);
       setEndI(i);
       setEndJ(j);
@@ -295,39 +226,42 @@ const Grid = () => {
   };
 
   const executeAStar = () => {
-    // creating the neighbors of each node
-    createNeighbors();
     // in case they turned into obstacles from the initial loop
     grid[startI][startJ].obstacle = false;
     grid[endI][endJ].obstacle = false;
     // algorithm only needs start and end, because
     // each object has stored their neighbors
     // sending start & end node to algorithm function
-    const result = aStarAlgorithm(grid[startI][startJ], grid[endI][endJ]);
-    if (result === "no viable solution") return;
-    searchingAnimation(result[0], result[1]);
+    const result = aStarAlgorithm(
+      grid[startI][startJ],
+      grid[endI][endJ],
+      columns,
+      rows,
+      grid
+    );
+    if (result === false) return;
+    searchingAnimation(result[0], result[1], "visited");
   };
 
   const executeDijkstra = () => {
-    createNeighbors();
-    const result = dijkstraAlgorithm(
-      grid,
-      grid[startI][startJ],
-      grid[endI][endJ]
-    );
-    searchingAnimation(result[0], result[1]);
+    const result = dijkstraAlgorithm(grid[endI][endJ], columns, rows, grid);
+    searchingAnimation(result[0], result[1], "visited");
   };
 
   const executeBfs = () => {
-    createNeighbors();
-    const result = bfsAlgorithm(grid[startI][startJ], grid[endI][endJ]);
-    searchingAnimation(result[0], result[1]);
+    const result = bfsAlgorithm(
+      grid[startI][startJ],
+      grid[endI][endJ],
+      columns,
+      rows,
+      grid
+    );
+    searchingAnimation(result[0], result[1], "visited");
   };
 
   const executeRecursiveDivision = () => {
-    createNeighbors(true);
     const maze = recursiveDivision(grid, columns, rows);
-    mazeAnimation(maze);
+    searchingAnimation(maze, false, "maze");
   };
 
   const restartingDOM = () => {
@@ -360,7 +294,7 @@ const Grid = () => {
                 {c.map((r, rIndx) => (
                   <NodeContainer
                     key={rIndx}
-                    onClick={() => createObstacle(cIndx, rIndx)}
+                    onClick={() => obstacleAnimation(cIndx, rIndx, "obstacle")}
                     onMouseDown={() => handleMouseDown(cIndx, rIndx)}
                     onMouseMove={() => handleMouseMove(cIndx, rIndx)}
                     onMouseUp={() => handleMouseUp(cIndx, rIndx)}
@@ -385,4 +319,5 @@ const Grid = () => {
     </>
   );
 };
+
 export default Grid;
