@@ -240,7 +240,7 @@ const Grid = () => {
       grid
     );
     if (result === false) return;
-    searchingAnimation(result[0], result[1], "visited");
+    searchingAnimation(Object.values(result[0]), result[1], "visited");
   };
 
   const executeDijkstra = () => {

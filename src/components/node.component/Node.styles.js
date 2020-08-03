@@ -9,19 +9,16 @@ const NodeAnimation = keyframes`
 0% {
   transform: scale(0.6, 0.6);
   opacity: 0.6;
-  border-radius: 20px;
 }
 
 50% {
   transform: scale(0.8, 0.8);
   opacity: 0.8;
-  border-radius: 10px;
 }
 
 100% {
   transform: scale(1, 1);
   opacity: 1;
-  border-radius: none;
 }
 `;
 

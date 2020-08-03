@@ -1,4 +1,35 @@
 // A* Pathfinder Algorithm
+class MinHeap {
+  constructor() {
+    this.heap = [null, 9, 4];
+  }
+
+  insert(node) {
+    this.heap.push(node);
+
+    if (this.heap.length > 1) {
+      // always enters the conditional, since the begginning
+      let current = this.heap.length - 1;
+
+      while (
+        current > 1 &&
+        this.heap[Math.floor(current / 2)] > this.heap[current]
+      ) {
+        // swap the values if parent node is bigger than child node
+        [this.heap[Math.floor(current / 2)], this.heap[current]] = [
+          this.heap[current],
+          this.heap[Math.floor(current / 2)],
+        ];
+        current = Math.floor(current / 2);
+      }
+    }
+  }
+
+  getMin() {
+    return this.heap[0];
+  }
+}
+
 const calculateHeuristic = (currentNode, endNode) => {
   // distance between the currentNode & endNode
   // sort of pythagorean theorem
@@ -33,11 +64,12 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
   // nodes being evaluated
   let openSet = [];
   // nodes done evaluating
-  let closedSet = [];
+  let closedSet = {};
   // answer path nodes
   let path = [];
 
   // we push the start node to be evaluated and enter the loop
+  openSet[`${start.i}${start.j}`] = start;
   openSet.push(start);
 
   while (true) {
@@ -70,7 +102,7 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
       // O(n)
       openSet = openSet.filter((node) => node !== current);
       // add current to closedSet
-      closedSet.push(current);
+      closedSet[`${current.i}${current.j}`] = current;
 
       // only create neighbors for nodes that are being evaluated
       current.neighbors = nodeNeighbors(current.i, current.j, cols, rows, grid);
@@ -81,8 +113,9 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
         let neighbor = current.neighbors[i];
 
         // if neighbors var isn't in closetSet arr, enter statement
+
         if (
-          !closedSet.includes(neighbor) &&
+          !closedSet[`${neighbor.i}${neighbor.j}`] &&
           !neighbor.obstacle &&
           !neighbor.maze
         ) {
