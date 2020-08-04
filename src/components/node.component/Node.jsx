@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  faCarSide,
-  faBuilding,
-  faMapPin,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCarSide, faMapPin } from "@fortawesome/free-solid-svg-icons";
 
 import {
   NodeCell,
@@ -36,11 +32,7 @@ const Node = ({ visited, path, start, end, obstacle, hovering, maze }) => {
       ) : maze ? (
         <NodeCell maze={"true"} />
       ) : obstacle ? (
-        <NodeCell obstacle={obstacle}>
-          <IconContainer>
-            <Obstacle icon={faBuilding} />
-          </IconContainer>
-        </NodeCell>
+        <NodeCell maze={"true"} />
       ) : (
         <NodeCell visited={visited} hovering={hovering} />
       )}

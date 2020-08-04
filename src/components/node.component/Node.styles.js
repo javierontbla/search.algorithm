@@ -53,13 +53,7 @@ export const NodeCell = styled.div`
   width: 1.8vw;
   margin: 0;
   background-color: ${(props) =>
-    props.maze
-      ? `${blue}`
-      : props.obstacle
-      ? "none"
-      : props.visited
-      ? `${yellow}`
-      : `${white}`};
+    props.maze ? `${blue}` : props.visited ? `${yellow}` : `${white}`};
   border: 0.5px solid ${blue};
   opacity: ${(props) => (props.maze ? "1" : "0.9")};
   animation: ${(props) =>

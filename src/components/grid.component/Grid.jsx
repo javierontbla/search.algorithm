@@ -19,8 +19,8 @@ const Grid = () => {
   const [generatingObstacles, setGeneratingObstacles] = useState(false);
   const [movingStartNode, setMovingStartNode] = useState(false);
   const [movingEndNode, setMovingEndNode] = useState(false);
-  const [columns, setColumns] = useState(31);
-  const [rows, setRows] = useState(15);
+  const [columns, setColumns] = useState(41);
+  const [rows, setRows] = useState(19);
   const [startI, setStartI] = useState(5);
   const [startJ, setStartJ] = useState(7);
   const [endI, setEndI] = useState(columns - 6);
@@ -240,7 +240,7 @@ const Grid = () => {
       grid
     );
     if (result === false) return;
-    searchingAnimation(Object.values(result[0]), result[1], "visited");
+    searchingAnimation(result[0], result[1], "visited");
   };
 
   const executeDijkstra = () => {

@@ -1,35 +1,4 @@
 // A* Pathfinder Algorithm
-class MinHeap {
-  constructor() {
-    this.heap = [null, 9, 4];
-  }
-
-  insert(node) {
-    this.heap.push(node);
-
-    if (this.heap.length > 1) {
-      // always enters the conditional, since the begginning
-      let current = this.heap.length - 1;
-
-      while (
-        current > 1 &&
-        this.heap[Math.floor(current / 2)] > this.heap[current]
-      ) {
-        // swap the values if parent node is bigger than child node
-        [this.heap[Math.floor(current / 2)], this.heap[current]] = [
-          this.heap[current],
-          this.heap[Math.floor(current / 2)],
-        ];
-        current = Math.floor(current / 2);
-      }
-    }
-  }
-
-  getMin() {
-    return this.heap[0];
-  }
-}
-
 const calculateHeuristic = (currentNode, endNode) => {
   // distance between the currentNode & endNode
   // sort of pythagorean theorem
@@ -62,7 +31,7 @@ export const nodeNeighbors = (i, j, columns, rows, grid, maze) => {
 // because, the nodes are objs that have their neighbors stored
 export const aStarAlgorithm = (start, end, cols, rows, grid) => {
   // nodes being evaluated
-  let openSet = [];
+  let openSet = {};
   // nodes done evaluating
   let closedSet = {};
   // answer path nodes
@@ -70,20 +39,20 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
 
   // we push the start node to be evaluated and enter the loop
   openSet[`${start.i}${start.j}`] = start;
-  openSet.push(start);
 
   while (true) {
-    if (openSet.length > 0) {
+    if (Object.keys(openSet).length > 0) {
       // start loop with openSet only containing the start node
-      let closest = 0;
-      for (let i = 0; i < openSet.length; i++) {
-        if (openSet[i].f < openSet[closest].f) {
-          closest = i;
-        }
-      }
+      let closestObj = `${start.i}${start.j}`;
 
+      let set = Object.values(openSet);
+      let result = set.reduce((res, obj) => {
+        return obj.f < res.f ? obj : res;
+      });
+
+      closestObj = `${result.i}${result.j}`;
       // current gets updated everytime with the neighbor node with the lowest F
-      let current = openSet[closest];
+      let current = openSet[closestObj];
 
       // these means the algorithm is done
       if (current === end) {
@@ -99,14 +68,13 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
       }
 
       // remove current from openSet
-      // O(n)
-      openSet = openSet.filter((node) => node !== current);
+      // O(1)
+      delete openSet[`${current.i}${current.j}`];
       // add current to closedSet
       closedSet[`${current.i}${current.j}`] = current;
 
       // only create neighbors for nodes that are being evaluated
       current.neighbors = nodeNeighbors(current.i, current.j, cols, rows, grid);
-
       // get the neighbors of current
       for (let i = 0; i < current.neighbors.length; i++) {
         // store individual neighbor
@@ -122,14 +90,14 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
           let tentativeG = current.g + 1;
 
           let finalPath = false;
-          if (openSet.includes(neighbor)) {
+          if (openSet[`${neighbor.i}${neighbor.j}`]) {
             if (tentativeG < neighbor.g) {
               neighbor.g = tentativeG;
               finalPath = true;
             }
           } else {
             neighbor.g = tentativeG;
-            openSet.push(neighbor);
+            openSet[`${neighbor.i}${neighbor.j}`] = neighbor;
             finalPath = true;
           }
 
@@ -147,5 +115,5 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
       return false;
     }
   }
-  return [closedSet, path];
+  return [Object.values(closedSet).sort((a, b) => (a.g > b.g ? 1 : -1)), path];
 };
