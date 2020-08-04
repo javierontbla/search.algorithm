@@ -43,14 +43,12 @@ export const aStarAlgorithm = (start, end, cols, rows, grid) => {
   while (true) {
     if (Object.keys(openSet).length > 0) {
       // start loop with openSet only containing the start node
-      let closestObj = `${start.i}${start.j}`;
-
       let set = Object.values(openSet);
       let result = set.reduce((res, obj) => {
         return obj.f < res.f ? obj : res;
       });
 
-      closestObj = `${result.i}${result.j}`;
+      let closestObj = `${result.i}${result.j}`;
       // current gets updated everytime with the neighbor node with the lowest F
       let current = openSet[closestObj];
 

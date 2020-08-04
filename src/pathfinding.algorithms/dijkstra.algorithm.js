@@ -9,14 +9,14 @@ export const dijkstraAlgorithm = (end, cols, rows, grid) => {
   for (let i = 0; i < grid.length; i++) {
     let column = grid[i];
     for (let j = 0; j < column.length; j++) {
-      minQ.unshift(grid[i][j]);
+      minQ.push(grid[i][j]);
     }
   }
 
   while (minQ.length > 0) {
-    minQ.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
+    minQ.sort((nodeA, nodeB) => nodeB.distance - nodeA.distance);
     // delete current node from minQ array
-    let minValue = minQ.shift();
+    let minValue = minQ.pop();
 
     // if node is an obstacle continue to next iteration
     if (minValue.obstacle || minValue.maze) continue;

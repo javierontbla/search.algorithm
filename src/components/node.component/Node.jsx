@@ -8,7 +8,6 @@ import {
   NodePath,
   IconContainer,
   Car,
-  Obstacle,
   Pin,
 } from "./Node.styles";
 
@@ -29,12 +28,10 @@ const Node = ({ visited, path, start, end, obstacle, hovering, maze }) => {
         </NodeEnd>
       ) : path ? (
         <NodePath />
-      ) : maze ? (
-        <NodeCell maze={"true"} />
-      ) : obstacle ? (
+      ) : maze || obstacle ? (
         <NodeCell maze={"true"} />
       ) : (
-        <NodeCell visited={visited} hovering={hovering} />
+        <NodeCell visited={visited} />
       )}
     </>
   );

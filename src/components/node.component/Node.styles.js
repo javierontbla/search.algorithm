@@ -57,11 +57,7 @@ export const NodeCell = styled.div`
   border: 0.5px solid ${blue};
   opacity: ${(props) => (props.maze ? "1" : "0.9")};
   animation: ${(props) =>
-    props.hovering
-      ? css`
-          ${HoverNodeAnimation} 0.4s linear
-        `
-      : props.visited
+    props.visited
       ? css`
           ${NodeAnimation} 0.5s linear
         `

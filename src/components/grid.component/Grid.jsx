@@ -22,9 +22,9 @@ const Grid = () => {
   const [columns, setColumns] = useState(41);
   const [rows, setRows] = useState(19);
   const [startI, setStartI] = useState(5);
-  const [startJ, setStartJ] = useState(7);
+  const [startJ, setStartJ] = useState(8);
   const [endI, setEndI] = useState(columns - 6);
-  const [endJ, setEndJ] = useState(rows - 8);
+  const [endJ, setEndJ] = useState(rows - 11);
 
   useEffect(() => {
     const obstacles = () => {
@@ -205,7 +205,6 @@ const Grid = () => {
   };
 
   const handleMouseMove = (i, j) => {
-    if (movingStartNode || movingEndNode) obstacleAnimation(i, j, "hovering");
     if (generatingObstacles) obstacleAnimation(i, j, "obstacle");
   };
 

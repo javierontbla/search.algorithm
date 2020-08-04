@@ -4,9 +4,7 @@ import { Navbar } from "react-bootstrap";
 
 import { colors } from "../../colors/colors";
 
-const { white, blue, green } = colors;
-
-let hoverScale = 0;
+const { white, blue, green, yellow } = colors;
 
 const IconAnimation = keyframes`
   from {
@@ -29,13 +27,11 @@ const DropDownAnimation = keyframes`
 
 const ClickAnimation = keyframes`
   from {
-    background-color: ${green};
-    color: ${white};
+    font-size: 0.9rem;
   }
 
   to {
-    background-color: ${white};
-    color: ${green};
+    font-size: 1rem;
   }
 `;
 
@@ -228,8 +224,7 @@ export const Button = styled.button`
   }
   &:focus {
     outline: none;
-    animation: ${ClickAnimation} 0.6s ease;
-    background-color: ${white};
-    color: ${green};
+    animation: ${ClickAnimation} 0.4s linear;
+    font-size: 1rem;
   }
 `;

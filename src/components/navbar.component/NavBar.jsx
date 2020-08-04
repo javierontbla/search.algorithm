@@ -95,11 +95,13 @@ const NavBar = ({
             <Info icon={faInfoCircle} />
           </Tooltip>
           {restartBtn ? (
-            <PlayButton
-              icon={faRedoAlt}
-              onClick={() => restartDom()}
-              restart={"true"}
-            />
+            <Tooltip data="Restart">
+              <PlayButton
+                icon={faRedoAlt}
+                onClick={() => restartDom()}
+                restart={"true"}
+              />
+            </Tooltip>
           ) : (
             <Tooltip data="Visualize" playBtn={"true"}>
               <PlayButton
