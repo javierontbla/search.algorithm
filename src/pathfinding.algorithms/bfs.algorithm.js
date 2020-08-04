@@ -18,7 +18,7 @@ class Queue {
   }
   // first item
   peek() {
-    const value = this.first;
+    const value = this.first.value;
     this.dequeue(this.first);
     return value;
   }
@@ -59,29 +59,23 @@ export const bfsAlgorithm = (start, end, cols, rows, grid) => {
 
     // when we hit the end node
     // to end the algorithm
-    if (current.value === end) {
-      path.push(current.value);
+    if (current === end) {
+      path.push(current);
 
-      while (current.value.parent) {
-        path.push(current.value.parent);
-        current.value = current.value.parent;
+      while (current.parent) {
+        path.push(current.parent);
+        current = current.parent;
       }
       break;
     }
 
     // add neighbors to only nodes that are being evaluated
-    current.value.neighbors = nodeNeighbors(
-      current.value.i,
-      current.value.j,
-      cols,
-      rows,
-      grid
-    );
-    current.value.neighbors.forEach((neighbor) => {
+    current.neighbors = nodeNeighbors(current.i, current.j, cols, rows, grid);
+    current.neighbors.forEach((neighbor) => {
       if (!neighbor.visitedBfs && !neighbor.obstacle && !neighbor.maze) {
         visited.push(neighbor);
         neighbor.visitedBfs = true;
-        neighbor.parent = current.value;
+        neighbor.parent = current;
         queue.enqueue(neighbor);
       }
     });
