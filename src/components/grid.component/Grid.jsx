@@ -53,7 +53,6 @@ const Grid = () => {
             parent: null,
             visited: false,
             visitedBfs: false,
-            path: false,
             obstacle: false,
             startNode: true,
             endNode: false,
@@ -71,7 +70,6 @@ const Grid = () => {
             parent: null,
             visited: false,
             visitedBfs: false,
-            path: false,
             obstacle: false,
             endNode: true,
             startNode: false,
@@ -89,11 +87,9 @@ const Grid = () => {
             parent: null,
             visited: false,
             visitedBfs: false,
-            path: false,
             obstacle: obstacles(),
             startNode: false,
             endNode: false,
-            hovering: false,
             distance: Infinity,
             maze: false,
           });
@@ -136,11 +132,7 @@ const Grid = () => {
       setTimeout(() => {
         let nodePath = grid[path[j].i][path[j].j];
         let gridCopy = grid.slice();
-        nodePath = {
-          ...nodePath,
-          // updating the path nodes (yellow nodes)
-          path: true,
-        };
+        nodePath["path"] = true;
         gridCopy[path[j].i][path[j].j] = nodePath;
         setGrid(gridCopy);
         if (j === path.length - 1) setRestartBtn(true);
@@ -269,9 +261,9 @@ const Grid = () => {
     setRandomObstacles(false);
     setGeneratingObstacles(false);
     setStartI(5);
-    setStartJ(7);
+    setStartJ(8);
     setEndI(columns - 6);
-    setEndJ(rows - 8);
+    setEndJ(rows - 11);
   };
 
   return (

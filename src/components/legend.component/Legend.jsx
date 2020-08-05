@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  faCarSide,
-  faBuilding,
-  faMapPin,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCarSide, faMapPin } from "@fortawesome/free-solid-svg-icons";
 
 import {
   Container,
@@ -26,12 +22,8 @@ const Legend = () => {
           <Description>End</Description>
         </LegendContainer>
         <LegendContainer>
-          <Icon icon={faBuilding} obstacle={true} />
-          <Description>Obstacle</Description>
-        </LegendContainer>
-        <LegendContainer>
           <Node maze={true} />
-          <Description>Maze Block</Description>
+          <Description>Obstacle</Description>
         </LegendContainer>
         <LegendContainer>
           <Node visited={true} />

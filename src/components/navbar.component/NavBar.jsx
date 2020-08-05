@@ -26,8 +26,8 @@ import {
   MazesContainer,
   SocialContainer,
 } from "./NavBar.styles";
-
 import Nodes from "./logo.svg";
+import ModalTutorial from "../modal.tutorial/ModalTutorial";
 
 const NavBar = ({
   executeAStar,
@@ -39,6 +39,7 @@ const NavBar = ({
   restartBtn,
 }) => {
   const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
+  const [displayTutorial, setDisplayTutorial] = useState(false);
 
   const executeAlgorithm = () => {
     if (!currentAlgorithm) return;
@@ -68,8 +69,16 @@ const NavBar = ({
     restartingDOM();
   };
 
+  const handleTutorial = () => {
+    setDisplayTutorial((p) => !p);
+  };
+
   return (
     <>
+      <ModalTutorial
+        display={displayTutorial}
+        handleTutorial={() => handleTutorial()}
+      />
       <Nav>
         <LogoContainer>
           <Logo>PATHFINDER VISUALIZER</Logo>
@@ -92,7 +101,7 @@ const NavBar = ({
         </AlgorithmsContainer>
         <PlayButtonContainer>
           <Tooltip data="tutorial">
-            <Info icon={faInfoCircle} />
+            <Info icon={faInfoCircle} onClick={() => handleTutorial()} />
           </Tooltip>
           {restartBtn ? (
             <Tooltip data="Restart">
