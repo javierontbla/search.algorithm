@@ -75,10 +75,9 @@ const NavBar = ({
 
   return (
     <>
-      <ModalTutorial
-        display={displayTutorial}
-        handleTutorial={() => handleTutorial()}
-      />
+      {displayTutorial ? (
+        <ModalTutorial handleTutorial={() => handleTutorial()} />
+      ) : null}
       <Nav>
         <LogoContainer>
           <Logo>PATHFINDER VISUALIZER</Logo>

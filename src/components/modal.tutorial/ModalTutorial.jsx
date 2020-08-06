@@ -14,9 +14,9 @@ import {
 import { LogoIcon } from "../../components/navbar.component/NavBar.styles";
 import Nodes from "../../components/navbar.component/logo.svg";
 
-const ModalTutorial = ({ display, handleTutorial }) => {
+const ModalTutorial = ({ handleTutorial }) => {
   return (
-    <Modal size="lg" show={display} centered>
+    <Modal size="lg" show={true} centered>
       <Header>
         <Title>
           PATHFINDER VISUALIZER
@@ -58,7 +58,7 @@ const ModalTutorial = ({ display, handleTutorial }) => {
         </GifContainer>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleTutorial}>CLOSE</Button>
+        <Button onClick={handleTutorial}>GOT IT</Button>
       </Modal.Footer>
     </Modal>
   );

@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 
 import { colors } from "../../colors/colors";
 
-const { blue } = colors;
+const { blue, yellow } = colors;
 
 export const Header = styled(Modal.Header)`
   justify-content: center !important;
