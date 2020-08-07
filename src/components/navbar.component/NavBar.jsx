@@ -33,7 +33,8 @@ const NavBar = ({
   executeAStar,
   executeDijkstra,
   executeBfs,
-  executePrims,
+  executeSidewinder,
+  executeRecursive,
   randomObstacles,
   restartingDOM,
   restartBtn,
@@ -129,8 +130,8 @@ const NavBar = ({
               <Icon icon={faCaretDown} />
             </span>
             <Content>
-              <Button onClick={executePrims}>Recursive Division</Button>
-              <Button>maze2</Button>
+              <Button onClick={executeRecursive}>Recursive Division</Button>
+              <Button onClick={executeSidewinder}>Sidewinder</Button>
               <Button>maze3</Button>
             </Content>
           </Menu>

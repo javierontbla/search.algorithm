@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 
 import Node from "../node.component/Node";
 import NavBar from "../navbar.component/NavBar";
-import { Container, Rows, Columns, NodeContainer } from "./Grid.styles";
+import { Container, Rows, Columns, NodeContainer, Slider } from "./Grid.styles";
 import { aStarAlgorithm } from "../../pathfinding.algorithms/a.star.algorithm";
 import { dijkstraAlgorithm } from "../../pathfinding.algorithms/dijkstra.algorithm";
 import { bfsAlgorithm } from "../../pathfinding.algorithms/bfs.algorithm";
 import { recursiveDivision } from "../../mazes.algorithms/recursive.division.algorithm";
+import { sidewinderAlgorithm } from "../../mazes.algorithms/sidewinder.algorithm";
 
 const Grid = () => {
   const [grid, setGrid] = useState([]);
@@ -21,19 +22,23 @@ const Grid = () => {
   const [movingEndNode, setMovingEndNode] = useState(false);
   const [columns, setColumns] = useState(41);
   const [rows, setRows] = useState(19);
-  const [startI, setStartI] = useState(5);
-  const [startJ, setStartJ] = useState(8);
-  const [endI, setEndI] = useState(columns - 6);
-  const [endJ, setEndJ] = useState(rows - 11);
+  const [startI, setStartI] = useState(0);
+  const [startJ, setStartJ] = useState(0);
+  const [endI, setEndI] = useState(columns - 1);
+  const [endJ, setEndJ] = useState(rows - 1);
 
   useEffect(() => {
-    const obstacles = () => {
-      if (randomObstacles) {
-        if (Math.random(1) < 0.3) return true;
-      }
-      return false;
-    };
+    generateGrid();
+  }, [restartDOM, randomObstacles, columns, rows]);
 
+  const obstacles = () => {
+    if (randomObstacles) {
+      if (Math.random(1) < 0.3) return true;
+    }
+    return false;
+  };
+
+  const generateGrid = () => {
     // grid to store the i & j values of the loops
     let nodes = [];
     // columns
@@ -96,9 +101,9 @@ const Grid = () => {
         }
       }
     }
-    // set grid to grid state to render again
+
     setGrid(nodes);
-  }, [randomObstacles, restartDOM]);
+  };
 
   // CREATE RANDOM OBSTACLES ON GRID
   const createRandomObstacles = () => {
@@ -131,10 +136,10 @@ const Grid = () => {
     for (let j = 0; j < path.length; j++) {
       setTimeout(() => {
         let nodePath = grid[path[j].i][path[j].j];
-        let gridCopy = grid.slice();
+        let copy = grid.slice();
         nodePath["path"] = true;
-        gridCopy[path[j].i][path[j].j] = nodePath;
-        setGrid(gridCopy);
+        copy[path[j].i][path[j].j] = nodePath;
+        setGrid(copy);
         if (j === path.length - 1) setRestartBtn(true);
       }, 140 * j);
     }
@@ -152,7 +157,7 @@ const Grid = () => {
 
   const moveIcon = (i, j, action) => {
     let node = grid[i][j];
-    let gridCopy = grid.slice();
+    let copy = grid.slice();
     if (action === 1) {
       // move start
       node = {
@@ -180,8 +185,8 @@ const Grid = () => {
         endNode: false,
       };
     }
-    gridCopy[i][j] = node;
-    setGrid(gridCopy);
+    copy[i][j] = node;
+    setGrid(copy);
   };
 
   const handleMouseDown = (i, j) => {
@@ -255,6 +260,20 @@ const Grid = () => {
     searchingAnimation(maze, false, "maze");
   };
 
+  const executeSidewinder = () => {
+    moveIcon(startI, startJ, 3);
+    moveIcon(endI, endJ, 4);
+    setStartI(0);
+    setStartJ(0);
+    setEndI(columns - 1);
+    setEndJ(rows - 1);
+    moveIcon(0, 0, 1);
+    moveIcon(columns - 1, rows - 1, 2);
+
+    const maze = sidewinderAlgorithm(columns, rows, grid);
+    searchingAnimation(maze, false, "maze");
+  };
+
   const restartingDOM = () => {
     setRestartDOM((p) => !p);
     setRestartBtn(false);
@@ -266,6 +285,14 @@ const Grid = () => {
     setEndJ(rows - 11);
   };
 
+  const updatingColumns = (num) => {
+    setColumns(num.target.value);
+  };
+
+  const updatingRows = (num) => {
+    setRows(num.target.value);
+  };
+
   return (
     <>
       <Container>
@@ -273,10 +300,25 @@ const Grid = () => {
           executeAStar={() => executeAStar()}
           executeDijkstra={() => executeDijkstra()}
           executeBfs={() => executeBfs()}
-          executePrims={() => executeRecursiveDivision()}
+          executeRecursive={() => executeRecursiveDivision()}
+          executeSidewinder={() => executeSidewinder()}
           randomObstacles={() => createRandomObstacles()}
           restartingDOM={() => restartingDOM()}
           restartBtn={restartBtn}
+        />
+        <Slider
+          type="range"
+          min="5"
+          max="19"
+          value={rows}
+          onChange={(e) => updatingRows(e)}
+        />
+        <Slider
+          type="range"
+          min="5"
+          max="42"
+          value={columns}
+          onChange={(e) => updatingColumns(e)}
         />
         <Columns>
           {grid.map((c, cIndx) => {
